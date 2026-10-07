@@ -8,8 +8,11 @@
 
 define('ARTISAN_CLI', true);
 
-// Set routing ke controller Artisan
-$_SERVER['PATH_INFO']   = '/artisan';
-$_SERVER['REQUEST_URI'] = '/artisan';
+// Sisipkan 'artisan' ke argumen CLI agar router CodeIgniter mencocokkan route 'artisan/{any1?}...'
+$args   = $_SERVER['argv'] ?? ['artisan'];
+$script = array_shift($args);
+
+$_SERVER['argv'] = array_merge([$script, 'artisan'], $args);
+$_SERVER['argc'] = count($_SERVER['argv']);
 
 require_once __DIR__ . '/index.php';

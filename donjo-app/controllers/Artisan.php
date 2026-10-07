@@ -44,7 +44,24 @@ class Artisan extends CI_Controller
     {
         $kernel = app(Illuminate\Contracts\Console\Kernel::class);
 
-        exit($kernel->handle(new ArgvInput(), new ConsoleOutput()));
+        // Ekstraksi argumen bersih untuk Symfony Console
+        $rawArgs = $_SERVER['argv'] ?? [];
+        $tokens  = [];
+        $pastRouting = false;
+
+        foreach ($rawArgs as $arg) {
+            if (! $pastRouting) {
+                if ($arg === 'index.php' || basename($arg) === 'artisan' || $arg === 'artisan') {
+                    continue;
+                }
+                $pastRouting = true;
+            }
+            $tokens[] = $arg;
+        }
+
+        $cleanArgv = array_merge(['artisan'], $tokens);
+
+        exit($kernel->handle(new ArgvInput($cleanArgv), new ConsoleOutput()));
     }
 
     public function _remap()
