@@ -39,7 +39,9 @@ echo "🐳 [3/4] Memperbarui dan merestart kontainer Docker Staging..."
 docker compose -f docker-compose.staging.yml up -d
 
 echo "📦 [4/4] Menjalankan pembaruan data Desa Bobu & pembersihan cache..."
+docker exec opensid_staging_app chmod -R 777 /var/www/html/storage /var/www/html/desa || true
 docker exec opensid_staging_app php artisan opensid:seed-bobu || true
+docker exec opensid_staging_app php artisan view:clear || true
 docker exec opensid_staging_app php artisan optimize:clear || true
 docker restart opensid_staging_app
 
