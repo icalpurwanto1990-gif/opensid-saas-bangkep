@@ -7,17 +7,19 @@
 
 set -e
 
-echo "🚀 [1/4] Menarik kode pembaruan terbaru dari GitHub..."
-git pull origin main
+echo "🚀 [1/4] Menarik kode pembaruan terbaru dari GitHub (icalpurwanto1990-gif/opensid-saas-bangkep)..."
+git fetch origin main
+git reset --hard origin/main
 
 echo "🔒 [2/4] Memastikan hak akses folder storage dan desa..."
 mkdir -p storage desa/upload desa/config
 chmod -R 775 storage desa
+chmod +x update_from_github.sh deploy_staging.sh || true
 
-echo "🐳 [3/4] Memperbarui dan merestart kontainer Docker jika ada perubahan..."
+echo "🐳 [3/4] Memperbarui dan merestart kontainer Docker Staging..."
 docker compose -f docker-compose.staging.yml up -d --build
 
-echo "📦 [4/4] Menjalankan migrasi database otomatis..."
+echo "📦 [4/4] Menjalankan migrasi database dan pembersihan cache..."
 docker exec -t opensid_staging_app php artisan migrate --force || true
 docker exec -t opensid_staging_app php artisan optimize:clear || true
 

@@ -138,36 +138,51 @@ Jika di server VPS Anda sudah terpasang MySQL/MariaDB native di luar Docker dan 
 
 ---
 
-## 🐙 BAGIAN 4: Integrasi GitHub & Sinkronisasi Kode ke VPS
+## 🐙 BAGIAN 4: Otomatisasi Laptop ➔ GitHub ➔ VPS Staging
 
-### 1. Hubungkan Proyek Lokal ke GitHub Pribadi Anda
-Di terminal laptop Anda (folder `app_build`):
-```powershell
-# Jalankan skrip pembantu otomatis:
-.\setup_github.ps1 -RepoUrl "https://github.com/USERNAME/NAMA-REPO.git"
-```
-Atau manual:
-```powershell
-git remote rename origin upstream     # Simpan OpenSID publik sebagai upstream
-git remote add origin https://github.com/USERNAME/NAMA-REPO.git
-git branch -M main
-git add .
-git commit -m "feat: inisialisasi opensid saas banggai kepulauan & diskominfo"
-git push -u origin main
-```
+Repositori GitHub Resmi Anda:  
+👉 **`https://github.com/icalpurwanto1990-gif/opensid-saas-bangkep`**
 
-### 2. Menghubungkan VPS ke GitHub Anda
-Di terminal VPS (`ssh -p 2222 root@148.230.102.95`):
+### 1. Inisialisasi Satu Kali di Terminal VPS
+Masuk ke terminal VPS (`ssh -p 2222 root@148.230.102.95`):
 ```bash
 cd /var/www/opensid-saas
-git remote set-url origin https://github.com/USERNAME/NAMA-REPO.git
+git remote set-url origin https://github.com/icalpurwanto1990-gif/opensid-saas-bangkep.git
+git fetch origin main
+git branch -M main
+git reset --hard origin/main
+chmod +x update_from_github.sh deploy_staging.sh
 ```
 
-### 3. Cara Mengupdate VPS Cukup 1 Baris:
-Kapan pun Anda selesai mengedit kode di laptop dan melakukan `git push`:
-Di terminal VPS cukup jalankan:
+---
+
+### 2. Konfigurasi GitHub Actions Auto-Deploy (Opsional tapi Direkomendasikan)
+Agar setiap kali Anda push dari laptop, VPS langsung terupdate otomatis tanpa harus buka terminal VPS:
+1. Buka repo Anda: `https://github.com/icalpurwanto1990-gif/opensid-saas-bangkep/settings/secrets/actions`
+2. Klik tombol **New repository secret**, lalu tambahkan:
+   - **`VPS_PASSWORD`**: Masukkan password root VPS Anda.
+   *(Jika VPS memakai SSH Key, masukkan sebagai `VPS_SSH_KEY`)*
+3. Selesai! GitHub Actions akan otomatis aktif setiap kali Anda push ke branch `main`.
+
+---
+
+### 3. Alur Kerja Sehari-hari (One-Click Auto-Deploy dari Laptop)
+Kapan pun Anda selesai mengedit kode di laptop, buka PowerShell di folder `app_build` dan cukup ketik:
+```powershell
+.\deploy_now.ps1 "update modul atau fitur baru"
+```
+Skrip ini akan otomatis:
+1. Men-stage dan men-commit semua perubahan terbaru.
+2. Melakukan `git push origin main` ke GitHub Anda.
+3. Memicu GitHub Actions untuk meng-update kontainer di VPS (`148.230.102.95:8090`).
+
+---
+
+### 4. Alternatif Pembaruan Manual dari Terminal VPS
+Jika GitHub Actions belum diatur atau Anda ingin menarik pembaruan langsung dari dalam VPS:
 ```bash
+cd /var/www/opensid-saas
 ./update_from_github.sh
 ```
-Skrip ini akan otomatis melakukan `git pull`, build ulang kontainer Docker jika ada perubahan konfigurasi, dan menjalankan migrasi database otomatis!
+*(Skrip ini otomatis `git pull`, rebuild container jika perlu, dan jalankan `php artisan migrate`)*.
 

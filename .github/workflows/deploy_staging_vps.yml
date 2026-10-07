@@ -1,4 +1,4 @@
-name: Deploy Staging to VPS
+name: Auto Deploy to VPS Staging
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-staging-vps
+  group: deploy-vps-staging
   cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Auto Deploy OpenSID SaaS to VPS Staging
+    name: Auto Deploy OpenSID SaaS to VPS Staging (148.230.102.95)
     runs-on: ubuntu-latest
 
     steps:
@@ -23,9 +23,25 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 2222 }}
+          script_stop: true
           script: |
-            set -euo pipefail
+            echo "🚀 [CI/CD] Menerima trigger auto-deploy dari GitHub..."
             cd /var/www/opensid-saas
-            git pull origin main
+            
+            echo "📥 [1/4] Menarik perubahan kode terbaru dari GitHub..."
+            git fetch origin main
+            git reset --hard origin/main
+            
+            echo "🔧 [2/4] Menyiapkan hak akses skrip dan direktori..."
             chmod +x update_from_github.sh deploy_staging.sh || true
-            bash update_from_github.sh
+            mkdir -p storage desa/upload desa/config
+            chmod -R 775 storage desa
+            
+            echo "🐳 [3/4] Menjalankan update kontainer Docker Staging..."
+            docker compose -f docker-compose.staging.yml up -d --build
+            
+            echo "📦 [4/4] Menjalankan migrasi database dan pembersihan cache..."
+            docker exec -t opensid_staging_app php artisan migrate --force || true
+            docker exec -t opensid_staging_app php artisan optimize:clear || true
+            
+            echo "🎉 Auto-deployment ke VPS 148.230.102.95:8090 Berhasil!"
