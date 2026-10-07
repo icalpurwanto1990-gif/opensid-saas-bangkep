@@ -89,6 +89,13 @@ Modules/*
 !Modules/Lapak/**
 !Modules/Pelanggan/
 !Modules/Pelanggan/**
+!Modules/Diskominfo/
+!Modules/Diskominfo/**
+
+# Environment secrets
+.env
+!.env.example
+!.env.docker
 
 # Do not ignore specific files
 !Modules/.gitkeep

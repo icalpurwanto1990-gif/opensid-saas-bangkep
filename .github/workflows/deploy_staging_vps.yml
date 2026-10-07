@@ -1,0 +1,31 @@
+name: Deploy Staging to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging-vps
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Auto Deploy OpenSID SaaS to VPS Staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST || '148.230.102.95' }}
+          username: ${{ secrets.VPS_USERNAME || 'root' }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 2222 }}
+          script: |
+            set -euo pipefail
+            cd /var/www/opensid-saas
+            git pull origin main
+            chmod +x update_from_github.sh deploy_staging.sh || true
+            bash update_from_github.sh

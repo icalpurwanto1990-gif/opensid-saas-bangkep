@@ -1,0 +1,13 @@
+.git
+.github
+node_modules
+backup_inkremental
+tests
+playwright-report
+test-results
+*.log
+.phpunit.result.cache
+scratch_test.php
+*.md
+!README.md
+!catatan_rilis.md

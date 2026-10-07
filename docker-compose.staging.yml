@@ -1,0 +1,63 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: opensid_staging_app
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - DB_HOST=${DB_HOST:-db}
+      - DB_DATABASE=${DB_DATABASE:-opensid_bobu}
+      - DB_USERNAME=${DB_USERNAME:-opensid_user}
+      - DB_PASSWORD=${DB_PASSWORD:-opensid_password}
+      - CI_ENV=production
+    networks:
+      - opensid_staging_net
+    depends_on:
+      - db
+
+  web:
+    image: nginx:alpine
+    container_name: opensid_staging_web
+    restart: always
+    ports:
+      - "${APP_PORT:-8090}:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    networks:
+      - opensid_staging_net
+    depends_on:
+      - app
+
+  db:
+    image: mariadb:10.6
+    container_name: opensid_staging_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-opensid_root_secret}
+      MYSQL_DATABASE: ${DB_DATABASE:-opensid_bobu}
+      MYSQL_USER: ${DB_USERNAME:-opensid_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-opensid_password}
+    volumes:
+      - opensid_staging_db_data:/var/lib/mysql
+    networks:
+      - opensid_staging_net
+
+networks:
+  opensid_staging_net:
+    driver: bridge
+
+volumes:
+  opensid_staging_db_data:
+    driver: local
+  certbot_conf:
+    driver: local
+  certbot_www:
+    driver: local

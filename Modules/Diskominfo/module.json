@@ -1,0 +1,12 @@
+{
+    "name": "Diskominfo",
+    "alias": "Diskominfo Command Center",
+    "description": "Modul Monitoring Terpusat & Multi-Tenant SaaS Dinas Komunikasi dan Informatika Kabupaten Banggai Kepulauan",
+    "keywords": ["diskominfo", "saas", "multi-tenant", "monitoring", "command-center", "banggai-kepulauan"],
+    "priority": 1,
+    "providers": [
+        "Modules\\Diskominfo\\Providers\\DiskominfoServiceProvider"
+    ],
+    "files": [],
+    "version": "1.0.0"
+}
