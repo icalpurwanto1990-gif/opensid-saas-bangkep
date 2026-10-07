@@ -62,14 +62,20 @@ class ProvisionTenantCommand extends Command
 
             // 2. Buat database baru jika belum ada
             $this->info("📦 [1/5] Membuat database {$targetDb}...");
-            $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$targetDb}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-
-            // Berikan izin penuh pada user database
             try {
-                $pdo->exec("GRANT ALL PRIVILEGES ON `{$targetDb}`.* TO '{$dbUser}'@'%';");
-                $pdo->exec('FLUSH PRIVILEGES;');
+                $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$targetDb}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
             } catch (Throwable $e) {
-                // Ignore jika bukan root
+                // Jika user biasa ditolak izinnya, gunakan akun root admin
+                $this->warn("ℹ️ User database standar belum memiliki izin CREATE DATABASE. Mengelevasi hak akses via root administrator...");
+                $rootPass = getenv('DB_ROOT_PASSWORD') ?: 'opensid_root_secret';
+                $pdoRoot  = new PDO("mysql:host={$host};port={$port}", 'root', $rootPass, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                ]);
+                $pdoRoot->exec("CREATE DATABASE IF NOT EXISTS `{$targetDb}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                $pdoRoot->exec("GRANT ALL PRIVILEGES ON `{$targetDb}`.* TO '{$dbUser}'@'%';");
+                $pdoRoot->exec("GRANT ALL PRIVILEGES ON `opensid_%`.* TO '{$dbUser}'@'%';");
+                $pdoRoot->exec('FLUSH PRIVILEGES;');
+                $pdo = $pdoRoot;
             }
 
             // 3. Gandakan struktur tabel dari sourceDb (opensid_bobu)
