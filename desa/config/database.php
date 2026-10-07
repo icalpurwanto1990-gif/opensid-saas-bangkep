@@ -14,6 +14,10 @@ $db['default']['port']     = (int) (getenv('DB_PORT') ?: 3306);
 $db['default']['dbcollat'] = 'utf8mb4_general_ci';
 $db['default']['stricton'] = false;
 
+// Basis data default (Desa Pilot: Bobu)
+$defaultDb = getenv('DB_DATABASE') ?: 'opensid_bobu';
+$db['default']['database'] = $defaultDb;
+
 // -------------------------------------------------------------
 // Multi-Tenant Dynamic Database Resolver (Banggai Kepulauan)
 // -------------------------------------------------------------
@@ -55,21 +59,50 @@ if (! $tenantSlug) {
     }
 }
 
-// 4. Tentukan Database Target
-if ($tenantSlug) {
+// 4. Verifikasi dan Tentukan Database Target
+if ($tenantSlug && $tenantSlug !== 'bobu') {
     $cleanSlug = preg_replace('/[^a-z0-9_]/', '', $tenantSlug);
     if (! empty($cleanSlug)) {
-        $db['default']['database'] = 'opensid_' . $cleanSlug;
+        $candidateDb = 'opensid_' . $cleanSlug;
 
-        // Simpan slug aktif ke session dan cookie
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            $_SESSION['active_tenant_slug'] = $cleanSlug;
+        // Cek cepat apakah database benar-benar ada di MariaDB server
+        // untuk mencegah MySQL Error 1049 jika desa belum dibuat via CLI
+        $dbExists = false;
+        try {
+            $testConn = @mysqli_init();
+            if ($testConn && @mysqli_real_connect($testConn, $db['default']['hostname'], $db['default']['username'], $db['default']['password'], '', $db['default']['port'], null, 0)) {
+                $dbExists = @mysqli_select_db($testConn, $candidateDb);
+                @mysqli_close($testConn);
+            }
+        } catch (\Throwable $e) {
+            $dbExists = false;
         }
-        if (! headers_sent()) {
-            @setcookie('active_tenant_slug', $cleanSlug, time() + (86400 * 30), '/');
+
+        if ($dbExists) {
+            $db['default']['database'] = $candidateDb;
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                $_SESSION['active_tenant_slug'] = $cleanSlug;
+            }
+            if (! headers_sent()) {
+                @setcookie('active_tenant_slug', $cleanSlug, time() + (86400 * 30), '/');
+            }
+        } else {
+            // Jika database belum dibuat, tetap gunakan default database (opensid_bobu) tanpa error
+            $db['default']['database'] = $defaultDb;
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                unset($_SESSION['active_tenant_slug']);
+            }
+            if (! headers_sent()) {
+                @setcookie('active_tenant_slug', '', time() - 3600, '/');
+            }
         }
     }
-} else {
-    // Default fallback ke DB Desa Pilot (Bobu)
-    $db['default']['database'] = getenv('DB_DATABASE') ?: 'opensid_bobu';
+} elseif ($tenantSlug === 'bobu') {
+    $db['default']['database'] = 'opensid_bobu';
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        $_SESSION['active_tenant_slug'] = 'bobu';
+    }
+    if (! headers_sent()) {
+        @setcookie('active_tenant_slug', 'bobu', time() + (86400 * 30), '/');
+    }
 }

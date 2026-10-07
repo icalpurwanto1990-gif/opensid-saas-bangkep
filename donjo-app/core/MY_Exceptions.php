@@ -93,6 +93,16 @@ class MY_Exceptions extends CI_Exceptions
 
         $error = $error ?: get_instance()?->db?->error();
         if ($error !== [] && in_array($error['code'], $this->db_error_codes)) {
+            // Jika error 1049 disebabkan oleh tenant yang databasenya belum dibuat, bersihkan session tenant dan fallback ke pilot tenant
+            if ((int) ($error['code'] ?? 0) === 1049 && ! empty($_SESSION['active_tenant_slug'])) {
+                unset($_SESSION['active_tenant_slug']);
+                if (! headers_sent()) {
+                    @setcookie('active_tenant_slug', '', time() - 3600, '/');
+                }
+                redirect('?desa=bobu');
+                return;
+            }
+
             $_SESSION['db_error']          = $error;
             $_SESSION['message']           = '<p>' . (is_array($error) ? implode('</p><p>', $error) : $error) . '</p>';
             $_SESSION['heading']           = $heading;
