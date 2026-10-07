@@ -52,13 +52,30 @@ class TenantManager
             }
         }
 
+        // 4. Cek Session aktif jika ada (navigasi di dalam sesi admin)
+        if (! $slug) {
+            if (session_status() === PHP_SESSION_ACTIVE && ! empty($_SESSION['active_tenant_slug'])) {
+                $slug = $_SESSION['active_tenant_slug'];
+            } elseif (isset($_COOKIE['active_tenant_slug']) && ! empty($_COOKIE['active_tenant_slug'])) {
+                $slug = $_COOKIE['active_tenant_slug'];
+            }
+        }
+
         // Jika ditemukan slug, cari data tenant
         if ($slug) {
             static::$currentTenant = static::findTenantBySlug($slug);
+            if (static::$currentTenant) {
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    $_SESSION['active_tenant_slug'] = $slug;
+                }
+                if (! headers_sent()) {
+                    @setcookie('active_tenant_slug', $slug, time() + (86400 * 30), '/');
+                }
+            }
         }
 
         // Default fallback ke Desa Pilot (Desa Bobu) jika dipanggil dalam konteks default Banggai Kepulauan
-        if (! static::$currentTenant && $slug === 'bobu') {
+        if (! static::$currentTenant) {
             static::$currentTenant = static::getDefaultPilotTenant();
         }
 
@@ -105,21 +122,54 @@ class TenantManager
         }
     }
 
-    /**
-     * Cari tenant berdasarkan slug atau kode desa.
-     */
     public static function findTenantBySlug(string $slug): ?Tenant
     {
-        // Jika tabel tenant di database belum siap, gunakan in-memory repository
-        $tenants = static::getRegisteredTenants();
+        $slug = strtolower(trim($slug));
 
+        // 1. Cek dari daftar tenant statis / terdaftar
+        $tenants = static::getRegisteredTenants();
         foreach ($tenants as $item) {
             if ($item->slug === $slug || $item->kode_desa === $slug) {
                 return $item;
             }
         }
 
-        return null;
+        // 2. Buat instance Tenant dinamis berdasarkan slug
+        $cleanSlug = preg_replace('/[^a-z0-9_]/', '', $slug);
+        if (empty($cleanSlug)) {
+            return null;
+        }
+
+        return new Tenant([
+            'id'               => crc32($cleanSlug),
+            'nama_desa'        => 'Desa ' . ucfirst($cleanSlug),
+            'slug'             => $cleanSlug,
+            'subdomain'        => $cleanSlug . '.banggaikep.go.id',
+            'custom_domain'    => $cleanSlug . '.desa.id',
+            'kecamatan'        => 'Banggai Kepulauan',
+            'kabupaten'        => 'Banggai Kepulauan',
+            'provinsi'         => 'Sulawesi Tengah',
+            'kode_desa'        => '72.07.xx.xxxx',
+            'kode_pos'         => '94785',
+            'nama_kepala_desa' => 'Kepala Desa ' . ucfirst($cleanSlug),
+            'status'           => 'Aktif',
+            'versi_opensid'    => '2607.0.1',
+            'total_penduduk'   => 0,
+            'total_kk'         => 0,
+            'status_server'    => 'Online',
+            'terakhir_sync'    => date('Y-m-d H:i:s'),
+            'db_name'          => 'opensid_' . $cleanSlug,
+            'lat'              => -1.385200,
+            'lng'              => 123.321400,
+        ]);
+    }
+
+    /**
+     * Alias untuk findTenantBySlug
+     */
+    public static function getTenantBySlug(string $slug): ?Tenant
+    {
+        return static::findTenantBySlug($slug);
     }
 
     /**

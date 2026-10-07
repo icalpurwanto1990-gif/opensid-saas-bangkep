@@ -105,6 +105,8 @@ class Kernel implements KernelContract
         DeactivateInactiveAccounts::class,
         SeedBobuCommand::class,
         ResetAdminCommand::class,
+        \App\Console\Commands\ProvisionTenantCommand::class,
+        \App\Console\Commands\SyncMetricsCommand::class,
     ];
 
     /**

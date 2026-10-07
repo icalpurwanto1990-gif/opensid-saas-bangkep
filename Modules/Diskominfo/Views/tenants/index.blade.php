@@ -105,14 +105,45 @@
                         </span>
                     </td>
                     <td style="padding: 1rem;">
-                        <a href="{{ base_url('index.php?desa=' . ($t->slug ?? $t['slug'] ?? 'bobu')) }}" target="_blank" class="btn-action btn-cyan" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-                            Buka Portal <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
+                        <div style="display: flex; gap: 0.4rem; align-items: center;">
+                            <a href="{{ base_url('index.php?desa=' . ($t->slug ?? $t['slug'] ?? 'bobu')) }}" target="_blank" class="btn-action btn-cyan" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;">
+                                Portal <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            <a href="{{ base_url('index.php/siteman?desa=' . ($t->slug ?? $t['slug'] ?? 'bobu')) }}" target="_blank" class="btn-action btn-outline" style="font-size: 0.72rem; padding: 0.3rem 0.6rem;">
+                                Admin <i class="fa-solid fa-user-shield"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Arsitektur Database-per-Tenant Info Card -->
+<div class="glass-card" style="margin-top: 2rem; border-color: rgba(14, 165, 233, 0.3);">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+        <i class="fa-solid fa-database" style="color: var(--accent-cyan); font-size: 1.25rem;"></i>
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0;">
+            Panduan Arsitektur Terisolasi (Database-per-Tenant)
+        </h3>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+        Setiap desa di Kabupaten Banggai Kepulauan memiliki basis data fisik MySQL terpisah (<code style="color: var(--accent-cyan);">opensid_{slug}</code>). 
+        Untuk mendaftarkan dan membuat basis data mandiri bagi desa baru secara instan, jalankan perintah CLI berikut di terminal VPS:
+    </p>
+    <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 0.75rem;">
+        <div style="font-size: 0.75rem; color: var(--text-subtle); margin-bottom: 0.4rem;">Perintah Pembuatan Database & Portal Desa Baru:</div>
+        <code style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; display: block; word-break: break-all;">
+            docker exec opensid_staging_app php artisan opensid:provision-tenant mansamat --name="Mansamat" --kecamatan="Tinangkung Selatan"
+        </code>
+    </div>
+    <div style="background: rgba(0, 0, 0, 0.4); border-radius: 8px; padding: 1rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="font-size: 0.75rem; color: var(--text-subtle); margin-bottom: 0.4rem;">Perintah Sinkronisasi Statistik Kabupaten dari Seluruh Database Desa:</div>
+        <code style="color: #10b981; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; display: block; word-break: break-all;">
+            docker exec opensid_staging_app php artisan opensid:sync-metrics
+        </code>
     </div>
 </div>
 @endsection

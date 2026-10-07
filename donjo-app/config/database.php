@@ -112,11 +112,21 @@ $active_group = 'default';
 // $active_record = TRUE;
 $query_builder = true;
 
+// Multi-tenant Dynamic Database Resolver
+$targetDb = getenv('DB_DATABASE') ?: 'opensid_bobu';
+$requestedSlug = $_GET['desa'] ?? $_GET['tenant'] ?? $_SERVER['HTTP_X_TENANT_ID'] ?? null;
+if (! $requestedSlug && session_status() === PHP_SESSION_ACTIVE && ! empty($_SESSION['active_tenant_slug'])) {
+    $requestedSlug = $_SESSION['active_tenant_slug'];
+}
+if ($requestedSlug && ! in_array($requestedSlug, ['clear', 'reset'])) {
+    $targetDb = 'opensid_' . preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string) $requestedSlug)));
+}
+
 // Pengaturan basisdata standar (otomatis membaca environment variable Docker / VPS)
 $db['default']['hostname']     = getenv('DB_HOST') ?: 'db';
 $db['default']['username']     = getenv('DB_USERNAME') ?: 'opensid_user';
 $db['default']['password']     = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : 'opensid_password';
-$db['default']['database']     = getenv('DB_DATABASE') ?: 'opensid_bobu';
+$db['default']['database']     = $targetDb;
 $db['default']['port']         = (int)(getenv('DB_PORT') ?: 3306);
 $db['default']['stricton']     = false;
 $db['default']['dbdriver']     = 'mysqli';
