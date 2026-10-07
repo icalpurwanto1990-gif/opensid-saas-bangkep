@@ -90,11 +90,11 @@ class TenantManager
         if (! empty($tenant->db_name)) {
             Config::set('database.connections.tenant', [
                 'driver'    => 'mysql',
-                'host'      => $tenant->db_host ?? env('DB_HOST', '127.0.0.1'),
-                'port'      => $tenant->db_port ?? env('DB_PORT', '3306'),
+                'host'      => $tenant->db_host ?? (getenv('DB_HOST') ?: '127.0.0.1'),
+                'port'      => $tenant->db_port ?? (getenv('DB_PORT') ?: '3306'),
                 'database'  => $tenant->db_name,
-                'username'  => $tenant->db_username ?? env('DB_USERNAME', 'root'),
-                'password'  => $tenant->db_password ?? env('DB_PASSWORD', ''),
+                'username'  => $tenant->db_username ?? (getenv('DB_USERNAME') ?: 'root'),
+                'password'  => $tenant->db_password ?? (getenv('DB_PASSWORD') ?: ''),
                 'charset'   => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
                 'prefix'    => $tenant->db_prefix ?? '',
