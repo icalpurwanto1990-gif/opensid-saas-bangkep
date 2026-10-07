@@ -18,11 +18,11 @@ jobs:
       - name: Deploy via SSH to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.VPS_HOST || '148.230.102.95' }}
-          username: ${{ secrets.VPS_USERNAME || 'root' }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT || 2222 }}
+          host: ${{ secrets.VPS_HOST || vars.VPS_HOST || '148.230.102.95' }}
+          username: ${{ secrets.VPS_USERNAME || vars.VPS_USERNAME || 'root' }}
+          password: ${{ secrets.VPS_PASSWORD || vars.VPS_PASSWORD || secrets.SSH_PASSWORD || secrets.PASSWORD || vars.PASSWORD }}
+          key: ${{ secrets.VPS_SSH_KEY || vars.VPS_SSH_KEY || secrets.SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || vars.VPS_PORT || 2222 }}
           script_stop: true
           script: |
             echo "🚀 [CI/CD] Menerima trigger auto-deploy dari GitHub..."
