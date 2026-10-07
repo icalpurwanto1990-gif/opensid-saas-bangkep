@@ -75,13 +75,15 @@ class Diskominfo extends CI_Controller
 
         if ($slug) {
             $tenant = class_exists(TenantManager::class) ? TenantManager::getTenantBySlug($slug) : null;
-            return view('diskominfo::tenant_detail', [
+            $viewName = view()->exists('diskominfo::tenants.detail') ? 'diskominfo::tenants.detail' : 'diskominfo::tenants.index';
+            return view($viewName, [
                 'title'  => 'Detail Monitoring Desa - ' . ($tenant['name'] ?? $slug),
                 'tenant' => $tenant,
             ]);
         }
 
-        return view('diskominfo::tenants', [
+        $viewName = view()->exists('diskominfo::tenants.index') ? 'diskominfo::tenants.index' : 'diskominfo::tenants';
+        return view($viewName, [
             'title'   => 'Monitoring Tenant Desa SaaS - Diskominfo Banggai Kepulauan',
             'tenants' => $tenants,
             'summary' => $summary,
@@ -96,7 +98,8 @@ class Diskominfo extends CI_Controller
         $summary = class_exists(VillageMetric::class) ? VillageMetric::getKabupatenSummary() : [];
         $tenants = class_exists(TenantManager::class) ? TenantManager::getRegisteredTenants() : [];
 
-        return view('diskominfo::gis', [
+        $viewName = view()->exists('diskominfo::gis.index') ? 'diskominfo::gis.index' : 'diskominfo::gis';
+        return view($viewName, [
             'title'   => 'Peta WebGIS Tematik Spasial - Kab. Banggai Kepulauan',
             'summary' => $summary,
             'tenants' => $tenants,

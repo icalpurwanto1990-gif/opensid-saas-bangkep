@@ -96,6 +96,7 @@ Modules/*
 .env
 !.env.example
 !.env.docker
+scratch_test_routes.php
 
 # Do not ignore specific files
 !Modules/.gitkeep
