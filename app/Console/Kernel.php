@@ -43,6 +43,7 @@ use App\Console\Commands\DesaBaruCommand;
 use App\Console\Commands\ModuleCommand;
 use App\Console\Commands\Modules\MigrationMakeCommand;
 use App\Console\Commands\Modules\SeedMakeCommand;
+use App\Console\Commands\SeedBobuCommand;
 use App\Console\Commands\SetupCommand;
 use App\Console\Commands\ViewClearCommand;
 use App\Exceptions\Handler;
@@ -101,6 +102,7 @@ class Kernel implements KernelContract
         SetupCommand::class,
         ViewClearCommand::class,
         DeactivateInactiveAccounts::class,
+        SeedBobuCommand::class,
     ];
 
     /**
