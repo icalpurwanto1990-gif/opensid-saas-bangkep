@@ -53,10 +53,11 @@ class ViewServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $viewsPath = storage_path('framework/views');
+        $viewsPath = config('view.compiled') ?: storage_path('framework/views');
         if (! is_dir($viewsPath)) {
             @mkdir($viewsPath, 0777, true);
         }
+        @chmod($viewsPath, 0777);
 
         $this->bootShareViewData();
         $this->bootHideSensitiveSetting();
