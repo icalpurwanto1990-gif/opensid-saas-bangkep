@@ -294,7 +294,7 @@
                 <span class="pulse-dot"></span>
                 LIVE NETWORK
             </div>
-            <a href="{{ site_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
+            <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Portal Desa Bobu
             </a>
         </div>

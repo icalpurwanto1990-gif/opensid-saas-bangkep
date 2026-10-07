@@ -38,7 +38,7 @@
             <a href="{{ site_url('diskominfo/gis') }}" class="btn-action btn-outline">
                 <i class="fa-solid fa-map-location-dot"></i> Koordinat Peta
             </a>
-            <a href="{{ site_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
+            <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Luncurkan Sistem Desa Bobu
             </a>
         </div>
@@ -105,7 +105,7 @@
                         </span>
                     </td>
                     <td style="padding: 1rem;">
-                        <a href="{{ site_url('index.php?desa=' . $t->slug) }}" target="_blank" class="btn-action btn-cyan" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+                        <a href="{{ base_url('index.php?desa=' . ($t->slug ?? $t['slug'] ?? 'bobu')) }}" target="_blank" class="btn-action btn-cyan" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
                             Buka Portal <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </td>

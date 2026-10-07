@@ -230,7 +230,7 @@
         <div style="text-align: right; z-index: 1;">
             <div style="font-size: 0.8rem; color: var(--text-subtle); margin-bottom: 0.3rem;">Kecamatan Pilot</div>
             <div style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.8rem;">Tinangkung Selatan</div>
-            <a href="{{ site_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
+            <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
                 <i class="fa-solid fa-desktop"></i> Akses Portal Desa Bobu
             </a>
         </div>
@@ -331,7 +331,7 @@
                                 </span>
                             </td>
                             <td>
-                                <a href="{{ site_url('index.php?desa=' . $t->slug) }}" target="_blank" class="btn-action btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">
+                                <a href="{{ base_url('index.php?desa=' . ($t->slug ?? $t['slug'] ?? 'bobu')) }}" target="_blank" class="btn-action btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">
                                     Buka <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                 </a>
                             </td>
@@ -388,7 +388,7 @@
                 <a href="{{ site_url('diskominfo/gis') }}" class="btn-action btn-outline" style="justify-content: center;">
                     <i class="fa-solid fa-map"></i> Buka Peta Spasial Desa Bobu
                 </a>
-                <a href="{{ site_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan" style="justify-content: center;">
+                <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan" style="justify-content: center;">
                     <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk ke Sistem Desa Bobu
                 </a>
             </div>

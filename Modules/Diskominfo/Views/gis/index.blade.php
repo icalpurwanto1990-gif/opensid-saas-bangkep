@@ -171,7 +171,7 @@
                 <div style="font-size: 11px; font-family: monospace; color: #00e5ff; margin-bottom: 10px;">
                     🌐 ${v.subdomain}
                 </div>
-                <a href="${'{{ site_url("index.php?desa=") }}' + v.slug}" target="_blank" style="display: block; text-align: center; background: #00e5ff; color: #04121e; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none;">
+                <a href="${'{{ base_url("index.php?desa=") }}' + v.slug}" target="_blank" style="display: block; text-align: center; background: #00e5ff; color: #04121e; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-decoration: none;">
                     Buka Portal Desa &rarr;
                 </a>
             </div>
