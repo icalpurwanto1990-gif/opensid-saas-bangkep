@@ -1,5 +1,8 @@
-# Abaikan folder desa
+# Abaikan folder desa kecuali config dan app_key
 desa/*
+!desa/config/
+!desa/config/**
+!desa/app_key
 
 # Abaikan file
 *.log
@@ -60,11 +63,12 @@ vendor/mikey179/*
 storage/framework/cache/*
 storage/framework/views/*
 storage/framework/sessions/*
-storage/logs
+storage/logs/*
 
 !storage/framework/cache/.gitkeep
 !storage/framework/views/.gitkeep
 !storage/framework/sessions/.gitkeep
+!storage/logs/.gitkeep
 
 php.ini
 

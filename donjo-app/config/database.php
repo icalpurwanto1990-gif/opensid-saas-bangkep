@@ -112,17 +112,17 @@ $active_group = 'default';
 // $active_record = TRUE;
 $query_builder = true;
 
-// Pengaturan basisdata standar
-$db['default']['hostname']     = 'localhost';
-$db['default']['username']     = 'root';
-$db['default']['password']     = '';
-$db['default']['database']     = 'opensid';
-$db['default']['port']         = 3306;
-$db['default']['stricton']     = true;
+// Pengaturan basisdata standar (otomatis membaca environment variable Docker / VPS)
+$db['default']['hostname']     = getenv('DB_HOST') ?: 'db';
+$db['default']['username']     = getenv('DB_USERNAME') ?: 'opensid_user';
+$db['default']['password']     = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : 'opensid_password';
+$db['default']['database']     = getenv('DB_DATABASE') ?: 'opensid_bobu';
+$db['default']['port']         = (int)(getenv('DB_PORT') ?: 3306);
+$db['default']['stricton']     = false;
 $db['default']['dbdriver']     = 'mysqli';
 $db['default']['dbprefix']     = '';
 $db['default']['pconnect']     = false;
-$db['default']['db_debug']     = true;
+$db['default']['db_debug']     = (ENVIRONMENT !== 'production');
 $db['default']['cache_on']     = false;
 $db['default']['cachedir']     = '';
 $db['default']['char_set']     = 'utf8mb4';
@@ -134,10 +134,12 @@ $db['default']['compress']     = false;
 $db['default']['failover']     = [];
 $db['default']['save_queries'] = true;
 
-// Ganti pegaturan basisdata sesuai yg ada pada file desa/config/database.php
-include LOKASI_CONFIG_DESA . 'database.php';
+// Ganti pegaturan basisdata sesuai yg ada pada file desa/config/database.php jika tersedia
+if (file_exists(LOKASI_CONFIG_DESA . 'database.php')) {
+    include LOKASI_CONFIG_DESA . 'database.php';
+}
 
 // diletakkan di bawah, karena encrypter diload dalam eloquent.php
-if (strlen($db['default']['password']) > 80) {
+if (isset($db['default']['password']) && strlen($db['default']['password']) > 80 && class_exists(Container::class) && Container::getInstance()->bound('encrypter')) {
     $db['default']['password'] = Container::getInstance()->make('encrypter')->decrypt($db['default']['password']);
 }

@@ -10,11 +10,12 @@ services:
       - ./:/var/www/html
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     environment:
-      - DB_HOST=${DB_HOST:-db}
+      - DB_HOST=db
       - DB_DATABASE=${DB_DATABASE:-opensid_bobu}
       - DB_USERNAME=${DB_USERNAME:-opensid_user}
       - DB_PASSWORD=${DB_PASSWORD:-opensid_password}
-      - CI_ENV=production
+      - CI_ENV=${CI_ENV:-production}
+      - APP_DEBUG=${APP_DEBUG:-true}
     networks:
       - opensid_staging_net
     depends_on:
@@ -48,7 +49,11 @@ services:
     volumes:
       - opensid_staging_db_data:/var/lib/mysql
     networks:
-      - opensid_staging_net
+      opensid_staging_net:
+        aliases:
+          - db
+          - staging_db
+          - opensid_staging_db
 
 networks:
   opensid_staging_net:

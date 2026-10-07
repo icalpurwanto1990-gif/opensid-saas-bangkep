@@ -70,8 +70,13 @@ switch (ENVIRONMENT) {
 
     case 'testing':
     case 'production':
-        ini_set('display_errors', 0);
-        error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+        if (getenv('APP_DEBUG') === 'true' || getenv('APP_DEBUG') === '1') {
+            ini_set('display_errors', 1);
+            error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+        } else {
+            ini_set('display_errors', 0);
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+        }
         break;
 
     default:
