@@ -7,16 +7,20 @@
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
+// Akses root /diskominfo
+Route::get('diskominfo', 'Diskominfo@index')->name('diskominfo.index');
+
+// Akses sub-rute /diskominfo/...
 Route::group('diskominfo', static function (): void {
     // Dashboard Utama Command Center
     Route::get('/', 'Diskominfo@index')->name('diskominfo.dashboard');
-    Route::get('/dashboard', 'Diskominfo@index')->name('diskominfo.dashboard.alt');
-    Route::get('/metrics', 'Diskominfo@metrics')->name('diskominfo.metrics');
+    Route::get('dashboard', 'Diskominfo@index')->name('diskominfo.dashboard.alt');
+    Route::get('metrics', 'Diskominfo@metrics')->name('diskominfo.metrics');
 
     // Manajemen Monitoring Desa (Tenants)
-    Route::get('/desa', 'Diskominfo@desa')->name('diskominfo.tenants');
-    Route::get('/desa/{slug}', 'Diskominfo@desa')->name('diskominfo.tenants.show');
+    Route::get('desa', 'Diskominfo@desa')->name('diskominfo.tenants');
+    Route::get('desa/{slug}', 'Diskominfo@desa')->name('diskominfo.tenants.show');
 
     // WebGIS Spasial Kabupaten Banggai Kepulauan
-    Route::get('/gis', 'Diskominfo@gis')->name('diskominfo.gis');
+    Route::get('gis', 'Diskominfo@gis')->name('diskominfo.gis');
 });
