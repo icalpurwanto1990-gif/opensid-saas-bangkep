@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class SeedBobuCommand extends Command
@@ -132,25 +133,25 @@ class SeedBobuCommand extends Command
     protected function seedUserAdmin(): void
     {
         if (Schema::hasTable('user')) {
-            $adminExists = DB::table('user')->where('username', 'admin')->exists();
+            $configId = DB::table('config')->value('id') ?? 1;
+            $hash     = Hash::make('sid304');
 
-            if (! $adminExists) {
-                DB::table('user')->insert([
-                    'username' => 'admin',
-                    'password' => password_hash('admin123', PASSWORD_BCRYPT),
-                    'nama'     => 'Administrator Desa Bobu',
-                    'id_grup'  => 1,
-                    'email'    => 'admin@bobu.desa.id',
-                    'active'   => 1,
-                ]);
-                $this->info('✅ [3/5] Akun Admin dibuat (user: admin / pass: admin123).');
-            } else {
-                DB::table('user')->where('username', 'admin')->update([
-                    'nama'   => 'Administrator Desa Bobu',
-                    'active' => 1,
-                ]);
-                $this->info('✅ [3/5] Akun Administrator Desa Bobu siap.');
-            }
+            DB::table('user')->updateOrInsert(
+                ['username' => 'admin'],
+                [
+                    'config_id' => $configId,
+                    'password'  => $hash,
+                    'nama'      => 'Administrator Desa Bobu',
+                    'id_grup'   => 1,
+                    'email'     => 'admin@bobu.desa.id',
+                    'active'    => 1,
+                ]
+            );
+
+            // Samakan seluruh user agar config_id konsisten
+            DB::table('user')->whereNull('config_id')->orWhere('config_id', 0)->update(['config_id' => $configId]);
+
+            $this->info("✅ [3/5] Akun Admin siap & disinkronkan (user: admin / pass: sid304, config_id: {$configId}).");
         }
     }
 
