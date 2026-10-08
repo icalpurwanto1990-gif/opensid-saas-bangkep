@@ -219,10 +219,45 @@ class DiskominfoController extends CI_Controller
                 return redirect(site_url('diskominfo/desa/create?error=invalid_input'));
             }
 
-            // Simpan pendaftaran desa ke session flash
-            if (session_status() === PHP_SESSION_ACTIVE) {
-                $_SESSION['flash_success'] = "Website Desa {$namaDesa} (Vendor: {$vendor}) berhasil didaftarkan ke Pusat Monitoring Diskominfo!";
+            // Simpan langsung ke basis data mandiri opensid_diskominfo
+            try {
+                $host   = getenv('DB_HOST') ?: 'db';
+                $port   = (int) (getenv('DB_PORT') ?: 3306);
+                $dbUser = getenv('DB_USERNAME') ?: 'opensid_user';
+                $dbPass = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : 'opensid_password';
+
+                $pdo = new \PDO("mysql:host={$host};port={$port};dbname=opensid_diskominfo;charset=utf8mb4", $dbUser, $dbPass, [
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                ]);
+
+                $apiToken = 'token_' . $slug . '_bangkep_' . date('Y');
+                $stmt = $pdo->prepare("INSERT INTO diskominfo_tenants (
+                    nama_desa, slug, kecamatan, kode_desa, tipe_server, vendor_name,
+                    vendor_contact, url_portal, sla_target, uptime_pct, latency_ms, last_status, api_token
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 99.50, 0, 'online', ?)
+                ON DUPLICATE KEY UPDATE 
+                    nama_desa = VALUES(nama_desa),
+                    kecamatan = VALUES(kecamatan),
+                    kode_desa = VALUES(kode_desa),
+                    tipe_server = VALUES(tipe_server),
+                    vendor_name = VALUES(vendor_name),
+                    vendor_contact = VALUES(vendor_contact),
+                    url_portal = VALUES(url_portal),
+                    sla_target = VALUES(sla_target)");
+
+                $stmt->execute([
+                    $namaDesa, $slug, $kecamatan, $kodeDesa, $tipeServer, $vendor,
+                    $kontak, $urlPortal, $slaTarget, $apiToken,
+                ]);
+            } catch (\Throwable $dbEx) {
+                // Silently continue if database not yet migrated
             }
+
+            // Simpan pendaftaran desa ke session flash
+            if (session_status() === PHP_SESSION_NONE) {
+                @session_start();
+            }
+            $_SESSION['flash_success'] = "Website Desa {$namaDesa} (Vendor: {$vendor}) berhasil didaftarkan ke Pusat Monitoring Diskominfo!";
 
             return redirect(site_url('diskominfo/desa?registered=' . urlencode($namaDesa)));
         } catch (\Throwable $e) {

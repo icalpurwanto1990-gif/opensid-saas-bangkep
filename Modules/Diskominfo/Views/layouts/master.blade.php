@@ -304,14 +304,36 @@
                 <span class="pulse-dot"></span>
                 LIVE NETWORK
             </div>
+            @if(!empty($_SESSION['diskominfo_user']))
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="badge-pill badge-emerald" style="font-size: 0.8rem;">
+                        <i class="fa-solid fa-user-shield"></i> {{ $_SESSION['diskominfo_user']['username'] }}
+                    </span>
+                    <a href="{{ site_url('diskominfo/logout') }}" class="btn-action btn-outline" style="padding: 0.45rem 0.8rem; color: #f87171; border-color: rgba(244, 63, 94, 0.4);" title="Keluar dari Web Admin Diskominfo">
+                        <i class="fa-solid fa-power-off"></i>
+                    </a>
+                </div>
+            @else
+                <a href="{{ site_url('diskominfo/login') }}" class="btn-action btn-outline" style="font-size: 0.82rem; padding: 0.45rem 0.9rem;">
+                    <i class="fa-solid fa-lock"></i> Login Admin
+                </a>
+            @endif
             <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Portal Desa Bobu
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Portal Desa Bobu
             </a>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-container">
+        @if(!empty($_SESSION['flash_success']))
+        <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 0.9rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; color: #6ee7b7;">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+            <span>{{ $_SESSION['flash_success'] }}</span>
+        </div>
+        @php unset($_SESSION['flash_success']); @endphp
+        @endif
+
         @yield('content')
     </main>
 

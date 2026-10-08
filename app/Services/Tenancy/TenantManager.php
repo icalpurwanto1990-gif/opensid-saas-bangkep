@@ -179,6 +179,31 @@ class TenantManager
      */
     public static function getRegisteredTenants(): array
     {
+        // 1. Coba baca dari tabel diskominfo_tenants di basis data opensid_diskominfo
+        try {
+            $host   = getenv('DB_HOST') ?: 'db';
+            $port   = (int) (getenv('DB_PORT') ?: 3306);
+            $dbUser = getenv('DB_USERNAME') ?: 'opensid_user';
+            $dbPass = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : 'opensid_password';
+
+            $pdo = new \PDO("mysql:host={$host};port={$port};dbname=opensid_diskominfo;charset=utf8mb4", $dbUser, $dbPass, [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            ]);
+
+            $stmt = $pdo->query("SELECT * FROM diskominfo_tenants ORDER BY id ASC");
+            $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if (! empty($rows)) {
+                $tenants = [];
+                foreach ($rows as $r) {
+                    $tenants[] = new Tenant($r);
+                }
+                return $tenants;
+            }
+        } catch (\Throwable $e) {
+            // Lanjutkan ke data fallback jika basis data opensid_diskominfo belum di-setup
+        }
+
+        // 2. Data fallback statis jika database belum dimigrasikan
         return [
             new Tenant([
                 'id'              => 1,

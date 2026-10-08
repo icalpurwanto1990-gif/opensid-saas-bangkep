@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class SlaIncident extends Model
 {
-    protected $table = 'sla_incident_logs';
+    protected $connection = 'diskominfo';
+
+    protected $table = 'diskominfo_sla_incidents';
 
     protected $guarded = [];
 

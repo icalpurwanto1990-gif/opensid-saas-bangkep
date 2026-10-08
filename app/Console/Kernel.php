@@ -108,6 +108,7 @@ class Kernel implements KernelContract
         \App\Console\Commands\ProvisionTenantCommand::class,
         \App\Console\Commands\SyncMetricsCommand::class,
         \App\Console\Commands\PingSlaCommand::class,
+        \App\Console\Commands\SetupDiskominfoDbCommand::class,
     ];
 
     /**

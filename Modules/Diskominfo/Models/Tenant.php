@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tenant extends Model
 {
-    protected $table = 'tenants';
+    protected $connection = 'diskominfo';
+
+    protected $table = 'diskominfo_tenants';
 
     protected $guarded = [];
 
