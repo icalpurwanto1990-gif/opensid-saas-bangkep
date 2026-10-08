@@ -55,11 +55,37 @@ if ($isDiskominfo) {
     // ---------------------------------------------------------
     $diskominfoDb = 'opensid_diskominfo';
 
-    // Auto-create basis data opensid_diskominfo secara aman jika belum dibuat di MariaDB
+    // Auto-create basis data opensid_diskominfo dan tabel kompatibilitas jika belum ada di MariaDB
     try {
         $testConn = @mysqli_init();
         if ($testConn && @mysqli_real_connect($testConn, $dbHost, $dbUser, $dbPass, '', $dbPort, null, 0)) {
             @mysqli_query($testConn, "CREATE DATABASE IF NOT EXISTS `{$diskominfoDb}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            if (@mysqli_select_db($testConn, $diskominfoDb)) {
+                // Pastikan tabel user dan config tersedia untuk framework OpenSID
+                @mysqli_query($testConn, "CREATE TABLE IF NOT EXISTS `user` (
+                    `id` INT AUTO_INCREMENT PRIMARY KEY,
+                    `username` VARCHAR(50) NOT NULL UNIQUE,
+                    `password` VARCHAR(255) NOT NULL,
+                    `id_grup` INT NOT NULL DEFAULT 1,
+                    `email` VARCHAR(100) NULL,
+                    `nama` VARCHAR(150) NOT NULL,
+                    `active` TINYINT NOT NULL DEFAULT 1,
+                    `config_id` INT NOT NULL DEFAULT 1,
+                    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+                @mysqli_query($testConn, "CREATE TABLE IF NOT EXISTS `config` (
+                    `id` INT AUTO_INCREMENT PRIMARY KEY,
+                    `nama_desa` VARCHAR(100) NOT NULL DEFAULT 'Diskominfo Kabupaten Banggai Kepulauan',
+                    `kode_desa` VARCHAR(30) NOT NULL DEFAULT '7207000000',
+                    `nama_kecamatan` VARCHAR(100) NOT NULL DEFAULT 'Tinangkung',
+                    `nama_kabupaten` VARCHAR(100) NOT NULL DEFAULT 'Banggai Kepulauan',
+                    `nama_propinsi` VARCHAR(100) NOT NULL DEFAULT 'Sulawesi Tengah',
+                    `kode_pos` VARCHAR(10) NOT NULL DEFAULT '94785'
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+                @mysqli_query($testConn, "INSERT IGNORE INTO `config` (`id`, `nama_desa`, `kode_desa`) VALUES (1, 'Diskominfo Kabupaten Banggai Kepulauan', '7207000000')");
+            }
             @mysqli_close($testConn);
         }
     } catch (\Throwable $e) {}

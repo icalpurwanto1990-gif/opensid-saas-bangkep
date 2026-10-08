@@ -85,7 +85,11 @@ class SessionGuard extends \Illuminate\Auth\SessionGuard
 
         // Attempt to retrieve the user by session identifier
         if (null !== $id) {
-            $this->user = $this->provider->retrieveById($id);
+            try {
+                $this->user = $this->provider->retrieveById($id);
+            } catch (\Throwable $e) {
+                $this->user = null;
+            }
 
             if ($this->user) {
                 $this->fireAuthenticatedEvent($this->user);

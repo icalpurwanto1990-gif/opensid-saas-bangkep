@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class VillageMetric extends Model
 {
+    protected $connection = 'diskominfo';
+
     protected $table = 'village_metrics';
 
     protected $guarded = [];

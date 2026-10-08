@@ -86,8 +86,12 @@ class ThrottleRequests implements MiddlewareInterface
     protected function resolveRequestSignature(Request $request)
     {
         // Jika user login, gunakan user ID
-        if ($user = $request->user()) {
-            return $this->formatIdentifier($user->getAuthIdentifier());
+        try {
+            if ($user = $request->user()) {
+                return $this->formatIdentifier($user->getAuthIdentifier());
+            }
+        } catch (\Throwable $e) {
+            // Abaikan jika tabel user belum siap atau sesi lintas-tenant tidak cocok
         }
 
         // Jika tidak login, gunakan host + IP

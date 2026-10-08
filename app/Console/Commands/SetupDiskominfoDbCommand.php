@@ -134,7 +134,63 @@ class SetupDiskominfoDbCommand extends Command
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
             $this->info("   ✓ Tabel 'diskominfo_sla_incidents' siap.");
 
-            // 6. Seed Super Admin Diskominfo
+            // 6. Buat tabel kompatibilitas OpenSID: user, config, setting_aplikasi, village_metrics
+            $this->info("🛡️ Membentuk skema tabel kompatibilitas OpenSID ('user', 'config', 'village_metrics')...");
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `user` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `username` VARCHAR(50) NOT NULL UNIQUE,
+                `password` VARCHAR(255) NOT NULL,
+                `id_grup` INT NOT NULL DEFAULT 1,
+                `email` VARCHAR(100) NULL,
+                `nama` VARCHAR(150) NOT NULL,
+                `active` TINYINT NOT NULL DEFAULT 1,
+                `config_id` INT NOT NULL DEFAULT 1,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `config` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `nama_desa` VARCHAR(100) NOT NULL DEFAULT 'Diskominfo Kabupaten Banggai Kepulauan',
+                `kode_desa` VARCHAR(30) NOT NULL DEFAULT '7207000000',
+                `nama_kecamatan` VARCHAR(100) NOT NULL DEFAULT 'Tinangkung',
+                `nama_kabupaten` VARCHAR(100) NOT NULL DEFAULT 'Banggai Kepulauan',
+                `nama_propinsi` VARCHAR(100) NOT NULL DEFAULT 'Sulawesi Tengah',
+                `kode_pos` VARCHAR(10) NOT NULL DEFAULT '94785',
+                `email_desa` VARCHAR(100) NULL DEFAULT 'diskominfo@banggaikep.go.id',
+                `website` VARCHAR(150) NULL DEFAULT 'http://148.230.102.95:8090/index.php/diskominfo'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+            $pdo->exec("INSERT IGNORE INTO `config` (`id`, `nama_desa`, `kode_desa`) VALUES (1, 'Diskominfo Kabupaten Banggai Kepulauan', '7207000000')");
+
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `setting_aplikasi` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `key` VARCHAR(100) NOT NULL UNIQUE,
+                `value` TEXT NULL,
+                `keterangan` VARCHAR(255) NULL,
+                `jenis` VARCHAR(50) DEFAULT 'text'
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+            $pdo->exec("CREATE TABLE IF NOT EXISTS `village_metrics` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `total_kecamatan` INT DEFAULT 12,
+                `total_desa` INT DEFAULT 141,
+                `desa_terhubung` INT DEFAULT 4,
+                `desa_online` INT DEFAULT 4,
+                `desa_offline` INT DEFAULT 0,
+                `total_penduduk` INT DEFAULT 6798,
+                `total_kk` INT DEFAULT 1858,
+                `total_surat` INT DEFAULT 1240,
+                `apbdes_total` BIGINT DEFAULT 4870000000,
+                `apbdes_realisasi` BIGINT DEFAULT 3730000000,
+                `bansos_tersalurkan` INT DEFAULT 925,
+                `sla_rata_rata` DECIMAL(5,2) DEFAULT 99.50,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+            $this->info("   ✓ Tabel kompatibilitas OpenSID ('user', 'config', 'village_metrics') siap.");
+
+            // 7. Seed Super Admin Diskominfo
             $adminUser = $this->option('admin-user') ?: 'admin_diskominfo';
             $adminPass = $this->option('admin-pass') ?: 'Bangkep@2026!';
             $hashedPass = password_hash($adminPass, PASSWORD_BCRYPT);
@@ -155,8 +211,21 @@ class SetupDiskominfoDbCommand extends Command
                 ]);
                 $this->info("🔑 Super Admin '{$adminUser}' berhasil dibuat di basis data '{$targetDb}'.");
             } else {
-                $this->line("ℹ️ Super Admin '{$adminUser}' sudah ada.");
+                $this->line("ℹ️ Super Admin '{$adminUser}' sudah ada di diskominfo_users.");
             }
+
+            // Daftarkan juga di tabel user lokal opensid_diskominfo agar SessionGuard kompatibel
+            $stmtUserCheck = $pdo->prepare("SELECT id FROM `user` WHERE `username` = ? OR `id` = 1");
+            $stmtUserCheck->execute([$adminUser]);
+            $existingUser = $stmtUserCheck->fetch();
+            if ($existingUser) {
+                $pdo->prepare("UPDATE `user` SET `username` = ?, `password` = ?, `active` = 1, `nama` = ?, `config_id` = 1 WHERE `id` = ?")
+                    ->execute([$adminUser, $hashedPass, 'Administrator Diskominfo Bangkep', $existingUser['id']]);
+            } else {
+                $pdo->prepare("INSERT INTO `user` (`id`, `username`, `password`, `id_grup`, `email`, `nama`, `active`, `config_id`) VALUES (1, ?, ?, 1, 'admin.diskominfo@banggaikep.go.id', 'Administrator Diskominfo Bangkep', 1, 1)")
+                    ->execute([$adminUser, $hashedPass]);
+            }
+            $this->info("   ✓ Akun admin '{$adminUser}' tersinkronisasi di tabel 'user' lokal opensid_diskominfo.");
 
             // 7. Seed Data Awal Simpul Desa Multi-Vendor
             $tenantsData = [
