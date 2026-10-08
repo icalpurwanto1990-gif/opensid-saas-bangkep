@@ -1,14 +1,21 @@
 <?php
 
-namespace Modules\Diskominfo\Http\Controllers;
+/*
+ * Modul Autentikasi Khusus Web Admin Diskominfo
+ * Kabupaten Banggai Kepulauan
+ */
 
-use App\Http\Controllers\Controller;
+defined('BASEPATH') || exit('No direct script access allowed');
+
 use Modules\Diskominfo\Models\DiskominfoUser;
-use PDO;
-use Throwable;
 
-class AuthController extends Controller
+class AuthController extends CI_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Pastikan namespace view diskominfo terdaftar.
      */

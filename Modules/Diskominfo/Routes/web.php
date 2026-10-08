@@ -9,9 +9,9 @@ defined('BASEPATH') || exit('No direct script access allowed');
 
 Route::group('diskominfo', ['namespace' => 'Diskominfo'], static function (): void {
     // 0. Autentikasi Mandiri Web Admin Diskominfo
-    Route::get('/login', 'AuthController@showLoginForm')->name('diskominfo.login');
-    Route::post('/login', 'AuthController@login')->name('diskominfo.login.post');
-    Route::get('/logout', 'AuthController@logout')->name('diskominfo.logout');
+    Route::get('/login', 'DiskominfoController@showLoginForm')->name('diskominfo.login');
+    Route::post('/login', 'DiskominfoController@login')->name('diskominfo.login.post');
+    Route::get('/logout', 'DiskominfoController@logout')->name('diskominfo.logout');
 
     // 1. Dashboard Utama Command Center
     Route::get('/', 'DiskominfoController@index')->name('diskominfo.dashboard');
