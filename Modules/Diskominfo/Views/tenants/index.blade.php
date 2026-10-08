@@ -42,17 +42,17 @@
                 {{ $pilotTenant->nama_desa }}
             </h3>
             <p style="color: var(--text-muted); font-size: 0.85rem;">
+                Domain Resmi: <a href="http://bobu-tinangkungselatan.desa.id:8090" target="_blank" style="color: var(--accent-cyan); font-weight: 700; text-decoration: none;">bobu-tinangkungselatan.desa.id</a> • 
                 Kode Wilayah: <span style="font-family: 'JetBrains Mono', monospace; color: #fff;">{{ $pilotTenant->kode_desa }}</span> • 
-                Kepala Desa: <strong>{{ $pilotTenant->nama_kepala_desa }}</strong> • 
                 Basis Data: <span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan);">{{ $pilotTenant->db_name }}</span>
             </p>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
-            <a href="{{ site_url('diskominfo/gis') }}" class="btn-action btn-outline">
-                <i class="fa-solid fa-map-location-dot"></i> Koordinat Peta
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="http://bobu-tinangkungselatan.desa.id:8090/index.php/siteman" target="_blank" class="btn-action btn-outline" style="border-color: rgba(0, 229, 255, 0.4);">
+                <i class="fa-solid fa-user-shield"></i> Admin Desa Bobu
             </a>
-            <a href="{{ base_url('index.php?desa=bobu') }}" target="_blank" class="btn-action btn-cyan">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Luncurkan Sistem Desa Bobu
+            <a href="http://bobu-tinangkungselatan.desa.id:8090" target="_blank" class="btn-action btn-cyan">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Portal Domain Desa
             </a>
         </div>
     </div>

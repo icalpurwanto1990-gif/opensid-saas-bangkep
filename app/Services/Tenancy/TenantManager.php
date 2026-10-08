@@ -42,13 +42,28 @@ class TenantManager
             $slug = strtolower(trim((string) $_SERVER['HTTP_X_TENANT_ID']));
         }
 
-        // 3. Cek Host / Subdomain
+        // 3. Cek Host / Domain Khusus Desa (contoh: bobu-tinangkungselatan.desa.id)
         if (! $slug && isset($_SERVER['HTTP_HOST'])) {
-            $host = strtolower($_SERVER['HTTP_HOST']);
-            $parts = explode('.', $host);
-            // Jika host berbentuk subdomain (contoh: bobu.banggaikep.go.id -> 'bobu')
-            if (count($parts) >= 3 && ! in_array($parts[0], ['www', 'diskominfo', 'admin', 'api', 'localhost'])) {
-                $slug = $parts[0];
+            $rawHost = strtolower($_SERVER['HTTP_HOST']);
+            $cleanHost = explode(':', $rawHost)[0];
+
+            $domainMap = [
+                'bobu-tinangkungselatan.desa.id' => 'bobu',
+                'bobu.banggaikep.go.id'          => 'bobu',
+                'bobu.desa.id'                   => 'bobu',
+            ];
+
+            if (isset($domainMap[$cleanHost])) {
+                $slug = $domainMap[$cleanHost];
+            } elseif (str_contains($cleanHost, 'bobu-tinangkungselatan') || str_contains($cleanHost, 'bobu.')) {
+                $slug = 'bobu';
+            } else {
+                $parts = explode('.', $cleanHost);
+                if (str_ends_with($cleanHost, '.desa.id') && str_contains($parts[0], '-')) {
+                    $slug = explode('-', $parts[0])[0];
+                } elseif (count($parts) >= 3 && ! in_array($parts[0], ['www', 'diskominfo', 'admin', 'api', 'localhost'])) {
+                    $slug = $parts[0];
+                }
             }
         }
 
@@ -210,8 +225,8 @@ class TenantManager
                 'nama_desa'       => 'Desa Bobu',
                 'slug'            => 'bobu',
                 'subdomain'       => 'bobu.banggaikep.go.id',
-                'custom_domain'   => 'bobu.desa.id',
-                'url_portal'      => base_url('index.php?desa=bobu'),
+                'custom_domain'   => 'bobu-tinangkungselatan.desa.id',
+                'url_portal'      => 'http://bobu-tinangkungselatan.desa.id:8090',
                 'kecamatan'       => 'Tinangkung Selatan',
                 'kabupaten'       => 'Banggai Kepulauan',
                 'provinsi'        => 'Sulawesi Tengah',

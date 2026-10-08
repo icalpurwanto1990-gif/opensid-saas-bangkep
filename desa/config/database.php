@@ -72,18 +72,34 @@ if ($isDiskominfo) {
     // RUTE PORTAL DESA: Multi-Tenant Resolver (Database-per-Tenant)
     // ---------------------------------------------------------
     $tenantSlug = null;
+    $rawHost = strtolower($_SERVER['HTTP_HOST'] ?? '');
+    $cleanHost = explode(':', $rawHost)[0];
 
-    // 1. Cek parameter URL (?desa=... atau ?tenant=...)
-    if (! empty($_GET['desa'])) {
+    // Pemetaan Domain Khusus Desa (Custom Domain Mapping Banggai Kepulauan)
+    $domainMap = [
+        'bobu-tinangkungselatan.desa.id' => 'bobu',
+        'bobu.banggaikep.go.id'          => 'bobu',
+        'bobu.desa.id'                   => 'bobu',
+    ];
+
+    if (isset($domainMap[$cleanHost])) {
+        $tenantSlug = $domainMap[$cleanHost];
+    } elseif (str_contains($cleanHost, 'bobu-tinangkungselatan') || str_contains($cleanHost, 'bobu.')) {
+        $tenantSlug = 'bobu';
+    } elseif (! empty($_GET['desa'])) {
         $tenantSlug = strtolower(trim((string) $_GET['desa']));
     } elseif (! empty($_GET['tenant'])) {
         $tenantSlug = strtolower(trim((string) $_GET['tenant']));
     } elseif (isset($_SERVER['HTTP_X_TENANT_ID'])) {
         $tenantSlug = strtolower(trim((string) $_SERVER['HTTP_X_TENANT_ID']));
-    } elseif (isset($_SERVER['HTTP_HOST'])) {
-        $hostParts = explode('.', $httpHost);
-        // Jika subdomain (contoh: bobu.banggaikep.go.id -> 'bobu')
-        if (count($hostParts) >= 3 && ! in_array($hostParts[0], ['www', 'diskominfo', 'admin', 'api', 'localhost'])) {
+    } elseif (! empty($cleanHost)) {
+        $hostParts = explode('.', $cleanHost);
+        // Pola 1: {desa}-{kecamatan}.desa.id -> ambil slug desa di depan strip
+        if (str_ends_with($cleanHost, '.desa.id') && str_contains($hostParts[0], '-')) {
+            $tenantSlug = explode('-', $hostParts[0])[0];
+        }
+        // Pola 2: Subdomain multi-tenant (contoh: mansamat.banggaikep.go.id -> 'mansamat')
+        elseif (count($hostParts) >= 3 && ! in_array($hostParts[0], ['www', 'diskominfo', 'admin', 'api', 'localhost'])) {
             $tenantSlug = $hostParts[0];
         }
     }

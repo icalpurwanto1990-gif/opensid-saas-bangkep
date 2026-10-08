@@ -74,9 +74,9 @@ class SeedBobuCommand extends Command
             'nama_propinsi'     => 'Sulawesi Tengah',
             'kode_propinsi'     => '72',
             'kode_pos'          => '94785',
-            'email_desa'        => 'pemdes@bobu.desa.id',
+            'email_desa'        => 'pemdes@bobu-tinangkungselatan.desa.id',
             'telepon'           => '082199887766',
-            'website'           => 'https://bobu.banggaikep.go.id',
+            'website'           => 'http://bobu-tinangkungselatan.desa.id:8090',
             'alamat_kantor'     => 'Jl. Trans Banggai Kepulauan, Desa Bobu, Kec. Tinangkung Selatan',
             'nama_kepala_camat' => 'Ilyas M. Tadja',
             'lat'               => -1.385200,
@@ -134,7 +134,7 @@ class SeedBobuCommand extends Command
     {
         if (Schema::hasTable('user')) {
             $configId = DB::table('config')->value('id') ?? 1;
-            $hash     = Hash::make('sid304');
+            $hash     = Hash::make('Bobu@2026!');
 
             DB::table('user')->updateOrInsert(
                 ['username' => 'admin'],
@@ -143,7 +143,7 @@ class SeedBobuCommand extends Command
                     'password'  => $hash,
                     'nama'      => 'Administrator Desa Bobu',
                     'id_grup'   => 1,
-                    'email'     => 'admin@bobu.desa.id',
+                    'email'     => 'admin@bobu-tinangkungselatan.desa.id',
                     'active'    => 1,
                 ]
             );
@@ -151,7 +151,7 @@ class SeedBobuCommand extends Command
             // Samakan seluruh user agar config_id konsisten
             DB::table('user')->whereNull('config_id')->orWhere('config_id', 0)->update(['config_id' => $configId]);
 
-            $this->info("✅ [3/5] Akun Admin siap & disinkronkan (user: admin / pass: sid304, config_id: {$configId}).");
+            $this->info("✅ [3/5] Akun Admin siap (user: admin / pass: Bobu@2026!, config_id: {$configId}).");
         }
     }
 

@@ -79,6 +79,8 @@ class SetupDiskominfoDbCommand extends Command
                 `tipe_server` VARCHAR(30) NOT NULL DEFAULT 'internal_saas',
                 `vendor_name` VARCHAR(150) NULL,
                 `vendor_contact` VARCHAR(150) NULL,
+                `subdomain` VARCHAR(100) NULL,
+                `custom_domain` VARCHAR(150) NULL,
                 `url_portal` VARCHAR(255) NULL,
                 `sla_target` DECIMAL(5,2) DEFAULT 99.00,
                 `uptime_pct` DECIMAL(5,2) DEFAULT 99.50,
@@ -166,7 +168,9 @@ class SetupDiskominfoDbCommand extends Command
                     'tipe_server'     => 'internal_saas',
                     'vendor_name'     => 'Diskominfo Banggai Kepulauan (Cloud)',
                     'vendor_contact'  => 'diskominfo@banggaikep.go.id / 0821-9988-7766',
-                    'url_portal'      => 'http://148.230.102.95:8090/index.php?desa=bobu',
+                    'subdomain'       => 'bobu.banggaikep.go.id',
+                    'custom_domain'   => 'bobu-tinangkungselatan.desa.id',
+                    'url_portal'      => 'http://bobu-tinangkungselatan.desa.id:8090',
                     'sla_target'      => 99.50,
                     'uptime_pct'      => 99.92,
                     'latency_ms'      => 45,
@@ -307,10 +311,10 @@ class SetupDiskominfoDbCommand extends Command
             $stmtTenantCheck = $pdo->prepare("SELECT id FROM diskominfo_tenants WHERE slug = ?");
             $stmtTenantInsert = $pdo->prepare("INSERT INTO diskominfo_tenants (
                 nama_desa, slug, kecamatan, kode_desa, tipe_server, vendor_name, vendor_contact,
-                url_portal, sla_target, uptime_pct, latency_ms, last_status, api_token,
+                subdomain, custom_domain, url_portal, sla_target, uptime_pct, latency_ms, last_status, api_token,
                 total_penduduk, total_kk, total_surat, apbdes_total, apbdes_realisasi,
                 bansos_tersalurkan, db_name, lat, lng
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             foreach ($tenantsData as $td) {
                 $stmtTenantCheck->execute([$td['slug']]);
@@ -318,6 +322,8 @@ class SetupDiskominfoDbCommand extends Command
                     $stmtTenantInsert->execute([
                         $td['nama_desa'], $td['slug'], $td['kecamatan'], $td['kode_desa'],
                         $td['tipe_server'], $td['vendor_name'], $td['vendor_contact'],
+                        $td['subdomain'] ?? ($td['slug'] . '.banggaikep.go.id'),
+                        $td['custom_domain'] ?? ($td['slug'] . '.desa.id'),
                         $td['url_portal'], $td['sla_target'], $td['uptime_pct'],
                         $td['latency_ms'], $td['last_status'], $td['api_token'],
                         $td['total_penduduk'], $td['total_kk'], $td['total_surat'],
