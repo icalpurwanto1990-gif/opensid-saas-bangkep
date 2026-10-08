@@ -58,8 +58,7 @@ class PingSlaCommand extends Command
         $tableData = [];
 
         foreach ($tenants as $t) {
-            $slug = $t->slug ?? '';
-            $pingRes = TenantManager::pingVillageHealth($slug);
+            $pingRes = TenantManager::pingVillageHealth($t);
 
             $statusFormatted = $pingRes['is_up']
                 ? '<info>ONLINE</info>'
