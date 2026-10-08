@@ -273,17 +273,27 @@
             <ul class="nav-links">
                 <li>
                     <a href="{{ site_url('diskominfo') }}" class="nav-link {{ request()->is('diskominfo') || request()->is('diskominfo/dashboard') ? 'active' : '' }}">
-                        <i class="fa-solid fa-chart-pie"></i> Eksekutif Dashboard
+                        <i class="fa-solid fa-chart-pie"></i> Eksekutif
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ site_url('diskominfo/sla') }}" class="nav-link {{ request()->is('diskominfo/sla*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-heart-pulse" style="color: var(--accent-emerald);"></i> Pusat SLA & Vendor
                     </a>
                 </li>
                 <li>
                     <a href="{{ site_url('diskominfo/desa') }}" class="nav-link {{ request()->is('diskominfo/desa*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-network-wired"></i> Monitoring Desa (SaaS)
+                        <i class="fa-solid fa-network-wired"></i> Desa (Multi-Vendor)
                     </a>
                 </li>
                 <li>
                     <a href="{{ site_url('diskominfo/gis') }}" class="nav-link {{ request()->is('diskominfo/gis*') ? 'active' : '' }}">
-                        <i class="fa-solid fa-map-location-dot"></i> WebGIS Kabupaten
+                        <i class="fa-solid fa-map-location-dot"></i> WebGIS
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ site_url('diskominfo/laporan') }}" class="nav-link {{ request()->is('diskominfo/laporan*') ? 'active' : '' }}">
+                        <i class="fa-solid fa-file-shield" style="color: var(--accent-amber);"></i> Laporan SLA
                     </a>
                 </li>
             </ul>

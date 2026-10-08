@@ -5,16 +5,29 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
         <h2 style="font-size: 1.6rem; font-weight: 800; color: #fff;">
             <i class="fa-solid fa-network-wired" style="color: var(--accent-cyan); margin-right: 0.5rem;"></i>
-            Manajemen Desa SaaS Kabupaten Banggai Kepulauan
+            Manajemen Desa & Multi-Vendor Kab. Banggai Kepulauan
         </h2>
-        <span class="badge-pill badge-cyan" style="font-size: 0.85rem; padding: 0.4rem 1rem;">
-            Total Terdaftar: {{ count($tenants) }} Simpul
-        </span>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <a href="{{ site_url('diskominfo/desa/create') }}" class="btn-action btn-cyan" style="font-size: 0.85rem; padding: 0.45rem 1rem;">
+                <i class="fa-solid fa-plus-circle"></i> Daftarkan Desa / Vendor Baru
+            </a>
+            <span class="badge-pill badge-cyan" style="font-size: 0.85rem; padding: 0.45rem 1rem;">
+                Total: {{ count($tenants) }} Simpul
+            </span>
+        </div>
     </div>
     <p style="color: var(--text-muted); font-size: 0.92rem;">
-        Setiap desa di bawah ini beroperasi secara mandiri dengan isolasi basis data terpisah (Database-per-Tenant), 
-        dan terpantau secara terpusat oleh Dinas Komunikasi dan Informatika.
+        Pusat kendali dan integrasi seluruh website desa di Kabupaten Banggai Kepulauan baik SaaS Internal Diskominfo 
+        maupun vendor eksternal (cPanel, Cloud VPS Mandiri, atau Custom CMS).
     </p>
+
+    @if(!empty($_SESSION['flash_success']) || !empty($_GET['registered']))
+    <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 0.9rem 1.25rem; margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem; color: #6ee7b7;">
+        <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+        <span>{{ $_SESSION['flash_success'] ?? ('Desa ' . htmlspecialchars($_GET['registered']) . ' berhasil didaftarkan ke Pusat Monitoring Diskominfo!') }}</span>
+    </div>
+    @php unset($_SESSION['flash_success']); @endphp
+    @endif
 </div>
 
 <!-- Pilot Village Special Card -->

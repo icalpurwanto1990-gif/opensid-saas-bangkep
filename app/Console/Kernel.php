@@ -107,6 +107,7 @@ class Kernel implements KernelContract
         ResetAdminCommand::class,
         \App\Console\Commands\ProvisionTenantCommand::class,
         \App\Console\Commands\SyncMetricsCommand::class,
+        \App\Console\Commands\PingSlaCommand::class,
     ];
 
     /**

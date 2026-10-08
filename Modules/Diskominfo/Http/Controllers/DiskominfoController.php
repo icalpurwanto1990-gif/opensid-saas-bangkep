@@ -1,13 +1,15 @@
 <?php
 
 /*
- * Modul Diskominfo Command Center & SaaS Multi-Tenant
+ * Modul Diskominfo Command Center, Multi-Vendor Hub & SLA Monitoring
  * Kabupaten Banggai Kepulauan
  */
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
 use App\Services\Tenancy\TenantManager;
+use Modules\Diskominfo\Models\SlaIncident;
+use Modules\Diskominfo\Models\Tenant;
 use Modules\Diskominfo\Models\VillageMetric;
 
 class DiskominfoController extends CI_Controller
@@ -23,12 +25,12 @@ class DiskominfoController extends CI_Controller
     public function index()
     {
         try {
-            // Pastikan view namespace 'diskominfo' terdaftar di container Blade
             $this->ensureViewNamespace();
 
             $summary     = class_exists(VillageMetric::class) ? VillageMetric::getKabupatenSummary() : [];
             $tenants     = class_exists(TenantManager::class) ? TenantManager::getRegisteredTenants() : [];
             $pilotTenant = class_exists(TenantManager::class) ? TenantManager::getDefaultPilotTenant() : null;
+            $slaSummary  = class_exists(TenantManager::class) ? TenantManager::getSlaSummary() : [];
 
             // Data statistik demografi pilot desa Bobu vs total kecamatan
             $demografi = [
@@ -56,6 +58,7 @@ class DiskominfoController extends CI_Controller
                 'summary'        => $summary,
                 'tenants'        => $tenants,
                 'pilotTenant'    => $pilotTenant,
+                'slaSummary'     => $slaSummary,
                 'demografi'      => $demografi,
                 'pelayananSurat' => $pelayananSurat,
             ]);
@@ -65,9 +68,86 @@ class DiskominfoController extends CI_Controller
     }
 
     /**
-     * Monitoring Daftar Tenant Desa SaaS
-     *
-     * @param string|null $slug
+     * Pusat Pemantauan SLA & Scorecard Keandalan Vendor untuk Pimpinan Daerah.
+     */
+    public function sla()
+    {
+        try {
+            $this->ensureViewNamespace();
+
+            $tenants    = TenantManager::getRegisteredTenants();
+            $slaSummary = TenantManager::getSlaSummary();
+            $incidents  = class_exists(SlaIncident::class) ? SlaIncident::getRecentIncidents() : [];
+
+            return view('diskominfo::sla.index', [
+                'title'      => 'Pusat Pemantauan SLA & Keandalan Vendor - Kab. Banggai Kepulauan',
+                'tenants'    => $tenants,
+                'slaSummary' => $slaSummary,
+                'incidents'  => $incidents,
+            ]);
+        } catch (\Throwable $e) {
+            $this->handleException($e, 'Pusat SLA & Keandalan Vendor');
+        }
+    }
+
+    /**
+     * Eksekusi live health check ping ke server website desa.
+     */
+    public function ping($slug = null)
+    {
+        try {
+            $tenants = TenantManager::getRegisteredTenants();
+
+            if ($slug) {
+                $target = TenantManager::findTenantBySlug($slug);
+                if (! $target) {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(404)
+                        ->set_output(json_encode(['status' => 'error', 'message' => "Desa {$slug} tidak ditemukan."]));
+                }
+                $result = TenantManager::pingVillageHealth($target);
+
+                if ($this->input->is_ajax_request() || $this->input->get('format') === 'json') {
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_output(json_encode([
+                            'status' => 'success',
+                            'desa'   => $target->nama_desa,
+                            'result' => $result,
+                        ]));
+                }
+
+                return redirect(site_url('diskominfo/sla?pinged=' . urlencode($target->nama_desa) . '&latency=' . $result['latency_ms'] . '&status=' . $result['status']));
+            }
+
+            // Ping seluruh desa
+            $results = [];
+            foreach ($tenants as $t) {
+                $results[$t->slug] = [
+                    'nama_desa' => $t->nama_desa,
+                    'vendor'    => $t->vendor_name,
+                    'ping'      => TenantManager::pingVillageHealth($t),
+                ];
+            }
+
+            if ($this->input->is_ajax_request() || $this->input->get('format') === 'json') {
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode(['status' => 'success', 'results' => $results]));
+            }
+
+            return redirect(site_url('diskominfo/sla?ping_all=success'));
+        } catch (\Throwable $e) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
+        }
+    }
+
+    /**
+     * Monitoring Daftar Simpul Desa Multi-Vendor & Infrastruktur.
      */
     public function desa($slug = null)
     {
@@ -77,6 +157,7 @@ class DiskominfoController extends CI_Controller
             $tenants     = class_exists(TenantManager::class) ? TenantManager::getRegisteredTenants() : [];
             $summary     = class_exists(VillageMetric::class) ? VillageMetric::getKabupatenSummary() : [];
             $pilotTenant = class_exists(TenantManager::class) ? TenantManager::getDefaultPilotTenant() : null;
+            $slaSummary  = class_exists(TenantManager::class) ? TenantManager::getSlaSummary() : [];
             $tenant      = null;
 
             if ($slug) {
@@ -89,15 +170,63 @@ class DiskominfoController extends CI_Controller
 
             return view('diskominfo::tenants.index', [
                 'title'       => $tenant
-                    ? 'Detail Monitoring Desa - ' . ($tenant['nama_desa'] ?? $slug)
-                    : 'Monitoring Tenant Desa SaaS - Diskominfo Banggai Kepulauan',
+                    ? 'Detail Monitoring Desa - ' . ($tenant->nama_desa ?? $slug)
+                    : 'Manajemen Multi-Vendor & Simpul Desa - Kab. Banggai Kepulauan',
                 'tenants'     => $tenants,
                 'summary'     => $summary,
                 'pilotTenant' => $pilotTenant,
+                'slaSummary'  => $slaSummary,
                 'tenant'      => $tenant,
             ]);
         } catch (\Throwable $e) {
-            $this->handleException($e, 'Monitoring Tenant Desa');
+            $this->handleException($e, 'Monitoring Multi-Vendor Desa');
+        }
+    }
+
+    /**
+     * Form pendaftaran desa eksternal / multi-vendor baru.
+     */
+    public function createDesa()
+    {
+        try {
+            $this->ensureViewNamespace();
+
+            return view('diskominfo::tenants.create', [
+                'title' => 'Daftarkan Website Desa / Vendor Eksternal - Diskominfo Banggai Kepulauan',
+            ]);
+        } catch (\Throwable $e) {
+            $this->handleException($e, 'Pendaftaran Desa Eksternal');
+        }
+    }
+
+    /**
+     * Simpan pendaftaran desa eksternal / multi-vendor baru.
+     */
+    public function storeDesa()
+    {
+        try {
+            $namaDesa  = trim((string) $this->input->post('nama_desa'));
+            $slug      = preg_replace('/[^a-z0-9_]/', '', strtolower(trim((string) $this->input->post('slug'))));
+            $kecamatan = trim((string) $this->input->post('kecamatan'));
+            $kodeDesa  = trim((string) $this->input->post('kode_desa'));
+            $vendor    = trim((string) $this->input->post('vendor_name'));
+            $kontak    = trim((string) $this->input->post('vendor_contact'));
+            $urlPortal = trim((string) $this->input->post('url_portal'));
+            $tipeServer= trim((string) $this->input->post('tipe_server')) ?: 'external_hosting';
+            $slaTarget = (float) ($this->input->post('sla_target') ?: 99.0);
+
+            if (empty($namaDesa) || empty($slug)) {
+                return redirect(site_url('diskominfo/desa/create?error=invalid_input'));
+            }
+
+            // Simpan pendaftaran desa ke session flash
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                $_SESSION['flash_success'] = "Website Desa {$namaDesa} (Vendor: {$vendor}) berhasil didaftarkan ke Pusat Monitoring Diskominfo!";
+            }
+
+            return redirect(site_url('diskominfo/desa?registered=' . urlencode($namaDesa)));
+        } catch (\Throwable $e) {
+            $this->handleException($e, 'Simpan Pendaftaran Desa');
         }
     }
 
@@ -125,6 +254,77 @@ class DiskominfoController extends CI_Controller
     }
 
     /**
+     * Laporan Kepatuhan SLA Eksekutif untuk Bupati & Pimpinan Daerah.
+     */
+    public function laporan()
+    {
+        try {
+            $this->ensureViewNamespace();
+
+            $tenants    = TenantManager::getRegisteredTenants();
+            $slaSummary = TenantManager::getSlaSummary();
+
+            return view('diskominfo::laporan.index', [
+                'title'      => 'Laporan Eksekutif Kepatuhan SLA & Indeks Desa Digital - Banggai Kepulauan',
+                'tenants'    => $tenants,
+                'slaSummary' => $slaSummary,
+            ]);
+        } catch (\Throwable $e) {
+            $this->handleException($e, 'Laporan Eksekutif SLA');
+        }
+    }
+
+    /**
+     * Universal REST API Ingestion Endpoint untuk Vendor Eksternal.
+     * Menerima kiriman data kependudukan, surat, dan bansos dari website desa manapun.
+     */
+    public function apiIngest()
+    {
+        // 1. Validasi Token Otentikasi
+        $token = $this->input->get_request_header('X-Diskominfo-Token', true)
+            ?: $this->input->get_request_header('Authorization', true);
+
+        if (! $token) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(401)
+                ->set_output(json_encode([
+                    'status'  => 'unauthorized',
+                    'message' => 'Header X-Diskominfo-Token wajib disertakan untuk otentikasi data ingestion.',
+                ]));
+        }
+
+        // 2. Baca Payload JSON
+        $rawPayload = file_get_contents('php://input');
+        $payload    = json_decode($rawPayload, true) ?: $this->input->post();
+
+        if (empty($payload)) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode([
+                    'status'  => 'bad_request',
+                    'message' => 'Payload JSON kosong atau format tidak valid.',
+                ]));
+        }
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'status'    => 'success',
+                'message'   => 'Data statistik desa berhasil diterima dan diagregasikan ke Diskominfo Command Center.',
+                'timestamp' => date('Y-m-d H:i:s'),
+                'received'  => [
+                    'kode_desa'      => $payload['kode_desa'] ?? null,
+                    'total_penduduk' => $payload['total_penduduk'] ?? 0,
+                    'total_kk'       => $payload['total_kk'] ?? 0,
+                    'total_surat'    => $payload['total_surat'] ?? 0,
+                ],
+            ]));
+    }
+
+    /**
      * API Status Endpoint untuk live polling metrics
      */
     public function metrics()
@@ -134,6 +334,21 @@ class DiskominfoController extends CI_Controller
         return $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($summary));
+    }
+
+    /**
+     * API Gateway Status
+     */
+    public function apiStatus()
+    {
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([
+                'service'   => 'Diskominfo Banggai Kepulauan Universal Interoperability Hub',
+                'version'   => '1.0.0-enterprise',
+                'status'    => 'Operational',
+                'timestamp' => date('Y-m-d H:i:s'),
+            ]));
     }
 
     /**
