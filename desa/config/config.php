@@ -24,3 +24,8 @@ $config['csrf_exclude_uris'] = [
     'diskominfo/desa/store',
     'diskominfo/sla/ping.*+',
 ];
+
+// Matikan batas URI karakter saat berjalan di mode CLI / Artisan runner
+if ((function_exists('is_cli') && is_cli()) || (defined('STDIN') || PHP_SAPI === 'cli' || defined('ARTISAN_CLI'))) {
+    $config['permitted_uri_chars'] = '';
+}

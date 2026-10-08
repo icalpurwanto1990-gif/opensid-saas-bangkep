@@ -216,6 +216,9 @@ $config['composer_autoload'] = 'vendor/autoload.php';
 |
 */
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-@\=';
+if ((function_exists('is_cli') && is_cli()) || (defined('STDIN') || PHP_SAPI === 'cli' || defined('ARTISAN_CLI'))) {
+    $config['permitted_uri_chars'] = '';
+}
 
 /*
 |--------------------------------------------------------------------------
