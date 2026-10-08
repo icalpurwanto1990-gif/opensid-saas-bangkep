@@ -9,3 +9,18 @@ $config['kabupaten']      = 'Banggai Kepulauan';
 $config['provinsi']       = 'Sulawesi Tengah';
 $config['kode_pos']       = '94785';
 $config['demo_mode']      = false;
+
+// Pengecualian CSRF untuk rute Web Admin Diskominfo & Universal API Ingestion
+$config['csrf_exclude_uris'] = [
+    'api.*+',
+    'external_api.*+',
+    'internal_api.*+',
+    'playwright.*+',
+    'pelanggan/pemesanan',
+    'diskominfo/login',
+    'diskominfo/logout',
+    'diskominfo/api.*+',
+    'diskominfo/api/ingest',
+    'diskominfo/desa/store',
+    'diskominfo/sla/ping.*+',
+];

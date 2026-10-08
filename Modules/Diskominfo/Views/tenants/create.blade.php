@@ -30,6 +30,13 @@
         </h3>
 
         <form action="{{ site_url('diskominfo/desa/store') }}" method="POST">
+            @php
+                $ci = &get_instance();
+                $csrfTokenName = (isset($ci->security) && method_exists($ci->security, 'get_csrf_token_name')) ? $ci->security->get_csrf_token_name() : 'sidcsrf';
+                $csrfTokenHash = (isset($ci->security) && method_exists($ci->security, 'get_csrf_hash')) ? $ci->security->get_csrf_hash() : '';
+            @endphp
+            <input type="hidden" name="{{ $csrfTokenName }}" value="{{ $csrfTokenHash }}">
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
                 <div>
                     <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.4rem;">

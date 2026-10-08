@@ -267,6 +267,13 @@
             @endif
 
             <form action="{{ site_url('diskominfo/login') }}" method="POST">
+                @php
+                    $ci = &get_instance();
+                    $csrfTokenName = (isset($ci->security) && method_exists($ci->security, 'get_csrf_token_name')) ? $ci->security->get_csrf_token_name() : 'sidcsrf';
+                    $csrfTokenHash = (isset($ci->security) && method_exists($ci->security, 'get_csrf_hash')) ? $ci->security->get_csrf_hash() : '';
+                @endphp
+                <input type="hidden" name="{{ $csrfTokenName }}" value="{{ $csrfTokenHash }}">
+
                 <div class="form-group">
                     <label class="form-label" for="username">Username Admin Diskominfo</label>
                     <div class="input-group">
