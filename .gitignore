@@ -1,8 +1,11 @@
-# Abaikan folder desa kecuali config dan app_key
+# Abaikan folder desa kecuali config, app_key dan themes
 desa/*
 !desa/config/
 !desa/config/**
 !desa/app_key
+!desa/themes/
+!desa/themes/**
+
 
 # Abaikan file
 *.log

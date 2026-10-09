@@ -1,0 +1,21 @@
+{
+    "name": "themes/bobu-gov",
+    "type": "library",
+    "description": "Tema Modern Government Portal Resmi Desa Bobu - Banggai Kepulauan",
+    "homepage": "https://bobu-tinangkungselatan.desa.id",
+    "version": "1.0.0",
+    "license": "GPL-3.0-or-later",
+    "keywords": [
+        "Themes",
+        "OpenSID",
+        "Bobu",
+        "Government",
+        "SPBE"
+    ],
+    "authors": [
+        {
+            "name": "Pemerintah Desa Bobu & Tim Pengembang Bangkep",
+            "email": "pemdes@bobu-tinangkungselatan.desa.id"
+        }
+    ]
+}
