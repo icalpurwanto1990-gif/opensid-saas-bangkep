@@ -100,12 +100,10 @@ class ActivateThemeCommand extends Command
 
         $this->info("🧹 [3/3] Membersihkan cache tema...");
         cache()->forget('theme_active');
-        if (function_exists('cache')) {
-            try {
-                cache()->flush();
-            } catch (\Throwable $e) {
-                // Abaikan jika cache driver redis/file tidak support flush
-            }
+        cache()->forget('theme_list');
+        try {
+            (new Theme())->flushQueryCache();
+        } catch (\Throwable $e) {
         }
 
         $this->newLine();

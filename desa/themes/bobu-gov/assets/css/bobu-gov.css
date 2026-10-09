@@ -1,209 +1,174 @@
 /* ==========================================================================
-   TEMA RESMI DESA BOBU — DESIGN SYSTEM DESA BAKA
-   Inspired by Website Resmi Desa Baka (baka-tinangkung.desa.id)
-   Friendly, Approachable, Rounded (20px+), Light Canvas (#fdfdfa)
+   TEMA RESMI DESA BOBU — DESIGN SYSTEM DESA KERSIK
+   Inspired by Website Resmi Desa Kersik (kersik.desa.id)
+   Energetic, Playful, Bold Typography (Outfit), White Canvas (#ffffff),
+   Kersik Green Accent (#87de57), Confident Hierarchy
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
     /* 1. Color Palette Tokens */
-    --village-primary: #2b7a0b;
-    --village-secondary: #5bb318;
-    --village-accent: #f5d042;
-    --village-cta: #0d6efd;
-    --village-bg: #fdfdfa;
-    --village-surface-alt: #f4f7fe;
+    --kersik-primary:    #87de57;  /* Brand color, CTA background */
+    --kersik-secondary:  #6bd731;  /* Hover state, complementary accent */
+    --kersik-accent-soft:#a2e67e;  /* Soft badge/icon background */
+    --kersik-accent-deep:#029019;  /* Accessible green text on white */
     
-    --text-dark: #2d3748;
-    --text-muted: #666666;
-    --text-slate: #1e293b;
-    --text-subtle: #64748b;
-    
-    --surface-white: #ffffff;
-    --border-subtle: #e2e8f0;
-    --border-dark: #212529;
+    --kersik-bg:         #ffffff;  /* Primary canvas */
+    --kersik-surface:    #f6f6f6;  /* Alternating block */
+    --kersik-dark:       #1d1d1d;  /* Dark sections & text emphasis */
+    --kersik-text:       #000000;  /* Main text */
+    --kersik-muted:      #666666;  /* Secondary / muted text */
+    --kersik-border:     #e5e7eb;  /* Card & divider borders */
+    --kersik-danger:     #d60505;
 
-    /* 2. Typography Tokens (100% Plus Jakarta Sans) */
-    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* 2. Typography Tokens (100% Outfit) */
+    --font-kersik: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-    /* 3. Radius Scale (Rounded Shapes 20px+) */
-    --radius-card: 20px;
-    --radius-pill: 9999px;
-    --radius-button: 14px;
-    --radius-sm: 8px;
+    /* 3. Radius Scale (8px - 26px) */
+    --radius-subtle: 4px;
+    --radius-btn:    8px;
+    --radius-pill:   26px;
+    --radius-card:   16px;
+    --radius-lg:     26px;
 
-    /* 4. Elevation & Shadows (Extracted from Desa Baka) */
-    --shadow-low: rgba(0, 0, 0, 0.075) 0px 2px 4px 0px;
-    --shadow-card: rgba(0, 0, 0, 0.02) 0px 4px 6px -1px, rgba(0, 0, 0, 0.02) 0px 2px 4px -1px;
-    --shadow-mid: rgba(0, 0, 0, 0.04) 0px 6px 12px -2px;
-    --shadow-high: rgba(0, 0, 0, 0.15) 0px 8px 16px 0px;
-    --shadow-deep: rgba(0, 0, 0, 0.176) 0px 16px 48px 0px;
+    /* 4. Depth & Elevation */
+    --shadow-low: rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 10px 15px -5px;
+    --shadow-md:  rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px;
+    --shadow-card: rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 36px 28px -7px, rgba(0, 0, 0, 0.04) 0px 17px 17px -7px;
 }
 
-/* Base Canvas & Global Resets */
+/* Base Canvas & Global Typography */
 body {
-    font-family: var(--font-family);
-    background-color: var(--village-bg);
-    color: var(--text-dark);
-    line-height: 1.7;
+    font-family: var(--font-kersik);
+    background-color: var(--kersik-bg);
+    color: var(--kersik-text);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family);
-    color: var(--text-dark);
+    font-family: var(--font-kersik);
+    color: var(--kersik-text);
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.25;
 }
 
-h1 { font-size: 2.75rem; font-weight: 800; }
-h2 { font-size: 2rem; font-weight: 800; }
-h3 { font-size: 1.5rem; font-weight: 700; }
-h4 { font-size: 1.2rem; font-weight: 700; }
+h1 { font-size: 2.75rem; font-weight: 700; }
+h2 { font-size: 2.25rem; font-weight: 700; }
+h3 { font-size: 1.6rem; font-weight: 700; }
+h4 { font-size: 1.25rem; font-weight: 700; }
 
 a {
-    color: var(--village-cta);
+    color: var(--kersik-accent-deep);
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 a:hover {
-    color: var(--village-primary);
+    color: var(--kersik-secondary);
 }
 
 /* ==========================================================================
-   BUTTONS & PILL STYLING (Desa Baka Standard)
+   BUTTONS (Desa Kersik Standard)
    ========================================================================== */
-.btn-pill-primary {
-    background: var(--village-primary);
+.btn-kersik-primary {
+    background: var(--kersik-primary);
+    color: #000000 !important;
+    border-radius: var(--radius-pill);
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(135, 222, 87, 0.35);
+    transition: all 0.25s ease;
+}
+
+.btn-kersik-primary:hover {
+    background: var(--kersik-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(107, 215, 49, 0.45);
+}
+
+.btn-kersik-outline {
+    background: transparent;
+    color: #000000 !important;
+    border: 2px solid var(--kersik-primary);
+    border-radius: var(--radius-pill);
+    padding: 10px 26px;
+    font-size: 1rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-kersik-outline:hover {
+    background: var(--kersik-primary);
+    color: #000000 !important;
+    transform: translateY(-2px);
+}
+
+.btn-kersik-dark {
+    background: var(--kersik-dark);
     color: #ffffff !important;
     border-radius: var(--radius-pill);
-    padding: 10px 24px;
-    font-size: 0.9rem;
+    padding: 12px 28px;
+    font-size: 1rem;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(43, 122, 11, 0.2);
     transition: all 0.25s ease;
 }
 
-.btn-pill-primary:hover {
-    background: #236509;
+.btn-kersik-dark:hover {
+    background: #000000;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(43, 122, 11, 0.3);
-}
-
-.btn-pill-blue {
-    background: var(--village-cta);
-    color: #ffffff !important;
-    border-radius: var(--radius-pill);
-    padding: 10px 24px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
-    transition: all 0.25s ease;
-}
-
-.btn-pill-blue:hover {
-    background: #0b5ed7;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(13, 110, 253, 0.3);
-}
-
-.btn-pill-gold {
-    background: var(--village-accent);
-    color: var(--text-dark) !important;
-    border-radius: var(--radius-pill);
-    padding: 10px 24px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(245, 208, 66, 0.25);
-    transition: all 0.25s ease;
-}
-
-.btn-pill-gold:hover {
-    background: #eac537;
-    transform: translateY(-2px);
-}
-
-.btn-pill-outline {
-    background: #ffffff;
-    color: var(--village-primary) !important;
-    border-radius: var(--radius-pill);
-    padding: 10px 24px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid #b6d4fe;
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.btn-pill-outline:hover {
-    background: var(--village-surface-alt);
-    border-color: var(--village-cta);
-    color: var(--village-cta) !important;
 }
 
 /* ==========================================================================
-   CARDS (Border Radius 20px, Tinted Shadows)
+   CARDS (Desa Kersik Standard: 16px Radius, Mantine Multi-Shadow)
    ========================================================================== */
-.card-baka {
-    background: var(--surface-white);
+.card-kersik {
+    background: var(--kersik-bg);
     border-radius: var(--radius-card);
-    padding: 28px;
+    padding: 32px;
     box-shadow: var(--shadow-card);
-    border: 1px solid rgba(226, 232, 240, 0.8);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid var(--kersik-border);
+    transition: all 0.3s ease;
 }
 
-.card-baka:hover {
-    box-shadow: var(--shadow-mid);
-    border-color: #cbd5e1;
-    transform: translateY(-3px);
+.card-kersik:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
 /* ==========================================================================
-   HEADER & TOPBAR (Fresh & Clean Light Style)
+   HEADER & TOPBAR (Fresh & Crisp Kersik Style)
    ========================================================================== */
-.baka-topbar {
-    background: #ffffff;
-    border-bottom: 1px solid #f1f5f9;
+.kersik-topbar {
+    background: var(--kersik-surface);
+    border-bottom: 1px solid var(--kersik-border);
     padding: 8px 0;
     font-size: 0.825rem;
-    color: var(--text-muted);
+    color: var(--kersik-muted);
 }
 
-.baka-topbar a {
-    color: var(--text-dark);
-}
-
-.baka-topbar a:hover {
-    color: var(--village-primary);
-}
-
-.baka-badge-pill {
-    background: var(--village-accent);
-    color: var(--text-dark);
+.kersik-badge-lime {
+    background: var(--kersik-primary);
+    color: #000000;
     border-radius: var(--radius-pill);
     padding: 3px 12px;
     font-size: 0.75rem;
@@ -213,41 +178,40 @@ a:hover {
     gap: 5px;
 }
 
-.baka-brand-header {
+.kersik-brand-header {
     background: #ffffff;
-    border-bottom: 1px solid #f1f5f9;
-    padding: 20px 0;
+    border-bottom: 1px solid var(--kersik-border);
+    padding: 18px 0;
 }
 
-.baka-brand-title {
-    font-size: 1.75rem;
+.kersik-brand-title {
+    font-size: 1.85rem;
     font-weight: 800;
-    color: var(--text-dark);
+    color: var(--kersik-text);
     margin: 0;
     line-height: 1.15;
 }
 
-.baka-brand-subtitle {
-    font-size: 0.85rem;
+.kersik-brand-subtitle {
+    font-size: 0.875rem;
     font-weight: 600;
-    color: var(--village-primary);
-    margin-top: 2px;
+    color: var(--kersik-accent-deep);
 }
 
 /* Navbar */
-.baka-navbar {
+.kersik-navbar {
     background: #ffffff;
-    border-bottom: 1px solid #e2e8f0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid var(--kersik-border);
     position: sticky;
     top: 0;
     z-index: 50;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
-.baka-nav-link {
-    color: var(--text-dark);
-    font-weight: 600;
-    font-size: 0.925rem;
+.kersik-nav-link {
+    color: var(--kersik-text);
+    font-weight: 700;
+    font-size: 0.95rem;
     padding: 14px 18px;
     border-radius: var(--radius-pill);
     display: inline-flex;
@@ -256,134 +220,152 @@ a:hover {
     transition: all 0.2s ease;
 }
 
-.baka-nav-link:hover {
-    background: var(--village-surface-alt);
-    color: var(--village-cta);
+.kersik-nav-link:hover {
+    background: var(--kersik-surface);
+    color: var(--kersik-accent-deep);
 }
 
-.baka-nav-link.active {
-    background: #e8f5e9;
-    color: var(--village-primary);
+.kersik-nav-link.active {
+    background: var(--kersik-primary);
+    color: #000000;
 }
 
 /* Ticker Marquee */
-.baka-ticker-bar {
-    background: #f4fbf1;
-    border-bottom: 1px solid #e2f2dc;
+.kersik-ticker-bar {
+    background: #ffffff;
+    border-bottom: 1px solid var(--kersik-border);
     padding: 8px 16px;
-    font-size: 0.825rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
 }
 
-.baka-ticker-tag {
-    background: var(--village-primary);
-    color: #ffffff;
-    border-radius: var(--radius-pill);
-    padding: 2px 12px;
+.kersik-ticker-tag {
+    background: var(--kersik-dark);
+    color: var(--kersik-primary);
+    border-radius: var(--radius-btn);
+    padding: 3px 12px;
     font-size: 0.75rem;
     font-weight: 700;
     white-space: nowrap;
-    margin-right: 12px;
+    margin-right: 14px;
 }
 
 /* ==========================================================================
-   HERO SECTION (Desa Baka Style: Friendly, Greenish, Approachable)
+   HERO SECTION (Desa Kersik Pattern: "JELAJAHI Desa Bobu")
    ========================================================================== */
-.baka-hero-section {
-    background: linear-gradient(180deg, #f0fdf4 0%, var(--village-bg) 100%);
-    padding: 56px 0 48px;
+.kersik-hero-section {
+    background: #ffffff;
+    padding: 64px 0 56px;
     position: relative;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--kersik-border);
 }
 
-.baka-hero-pill-badge {
-    background: var(--village-primary);
-    color: #ffffff;
-    border-radius: var(--radius-pill);
-    padding: 6px 18px;
-    font-size: 0.8rem;
-    font-weight: 700;
+.kersik-hero-lead-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-bottom: 16px;
+    background: #f0fdf4;
+    border: 1px solid var(--kersik-accent-soft);
+    color: var(--kersik-accent-deep);
+    border-radius: var(--radius-pill);
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-.baka-hero-title {
+.kersik-hero-title {
     font-size: 3.25rem;
-    font-weight: 900;
-    color: var(--text-dark);
-    line-height: 1.1;
-    margin-bottom: 16px;
+    font-weight: 800;
+    color: #000000;
+    line-height: 1.15;
+    margin-bottom: 18px;
 }
 
-.baka-hero-title span {
-    color: var(--village-primary);
+.kersik-hero-title span {
+    color: #000000;
+    position: relative;
+    display: inline-block;
 }
 
-.baka-hero-desc {
-    font-size: 1.2rem;
-    color: var(--text-muted);
+.kersik-hero-title span::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background: var(--kersik-primary);
+    z-index: -1;
+    border-radius: 4px;
+    opacity: 0.85;
+}
+
+.kersik-hero-desc {
+    font-size: 1.15rem;
+    color: var(--kersik-muted);
     line-height: 1.7;
-    max-width: 680px;
-    margin-bottom: 28px;
+    max-width: 640px;
+    margin-bottom: 32px;
 }
 
 /* ==========================================================================
-   METRIC STATS (Rounded 20px Cards)
+   STATISTIK (Card Kersik)
    ========================================================================== */
-.baka-stat-card {
+.kersik-stat-card {
     background: #ffffff;
     border-radius: var(--radius-card);
     padding: 24px;
-    box-shadow: var(--shadow-card);
-    border: 1px solid #e2e8f0;
-    transition: all 0.25s ease;
+    border: 1px solid var(--kersik-border);
+    box-shadow: var(--shadow-low);
     display: flex;
     align-items: center;
     gap: 16px;
+    transition: all 0.25s ease;
 }
 
-.baka-stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-mid);
-    border-color: var(--village-primary);
+.kersik-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--kersik-primary);
 }
 
-.baka-stat-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
+.kersik-stat-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: var(--radius-card);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     flex-shrink: 0;
+    background: #f4fbf1;
+    color: var(--kersik-accent-deep);
 }
 
-.baka-stat-number {
+.kersik-stat-number {
     font-size: 1.85rem;
     font-weight: 800;
-    color: var(--text-dark);
+    color: #000000;
     line-height: 1.1;
 }
 
-.baka-stat-label {
+.kersik-stat-label {
     font-size: 0.825rem;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(--kersik-muted);
 }
 
 /* ==========================================================================
-   CITIZEN SERVICE CARDS (Desa Baka Standard)
+   LAYANAN WARGA CARDS
    ========================================================================== */
-.baka-service-card {
+.kersik-service-card {
     background: #ffffff;
     border-radius: var(--radius-card);
     padding: 28px;
     box-shadow: var(--shadow-card);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--kersik-border);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -391,108 +373,111 @@ a:hover {
     height: 100%;
 }
 
-.baka-service-card:hover {
-    border-color: var(--village-primary);
+.kersik-service-card:hover {
+    border-color: var(--kersik-primary);
     transform: translateY(-4px);
-    box-shadow: var(--shadow-mid);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
 }
 
-.baka-service-icon {
+.kersik-service-icon {
     width: 52px;
     height: 52px;
-    border-radius: 16px;
+    border-radius: 14px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
+    background: #f0fdf4;
+    color: var(--kersik-accent-deep);
     margin-bottom: 18px;
 }
 
-.baka-service-title {
+.kersik-service-title {
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: #000000;
     margin-bottom: 8px;
 }
 
-.baka-service-desc {
+.kersik-service-desc {
     font-size: 0.875rem;
-    color: var(--text-muted);
+    color: var(--kersik-muted);
     line-height: 1.6;
     margin-bottom: 20px;
 }
 
 /* ==========================================================================
-   NEWS & ARTICLE CARDS
+   BERITA & ARTIKEL
    ========================================================================== */
-.baka-news-card {
+.kersik-news-card {
     background: #ffffff;
     border-radius: var(--radius-card);
     overflow: hidden;
     box-shadow: var(--shadow-card);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--kersik-border);
     transition: all 0.25s ease;
-    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.baka-news-card:hover {
+.kersik-news-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-mid);
+    border-color: var(--kersik-primary);
 }
 
-.baka-news-badge {
-    background: var(--village-accent);
-    color: var(--text-dark);
+.kersik-news-badge {
+    background: var(--kersik-primary);
+    color: #000000;
     border-radius: var(--radius-pill);
-    padding: 4px 12px;
+    padding: 3px 12px;
     font-size: 0.725rem;
     font-weight: 700;
 }
 
 /* ==========================================================================
-   INSTITUTIONAL FOOTER (Slate Charcoal #2d3748)
+   FOOTER (Desa Kersik: Dark Accent #1d1d1d)
    ========================================================================== */
-.baka-footer {
-    background: #2d3748;
-    color: #fdfdfa;
+.kersik-footer {
+    background: var(--kersik-dark);
+    color: #ffffff;
     padding-top: 56px;
     margin-top: 64px;
-    border-top-left-radius: 36px;
-    border-top-right-radius: 36px;
+    border-top: 4px solid var(--kersik-primary);
 }
 
-.baka-footer h4 {
+.kersik-footer h4 {
     color: #ffffff;
     font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 20px;
 }
 
-.baka-footer a {
-    color: #cbd5e1;
+.kersik-footer a {
+    color: #a3a3a3;
 }
 
-.baka-footer a:hover {
-    color: var(--village-accent);
+.kersik-footer a:hover {
+    color: var(--kersik-primary);
 }
 
-.baka-footer-bottom {
+.kersik-footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 24px 0;
     margin-top: 48px;
     font-size: 0.825rem;
-    color: #94a3b8;
+    color: #737373;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .baka-hero-title {
+    .kersik-hero-title {
         font-size: 2.25rem;
     }
-    .baka-hero-desc {
+    .kersik-hero-desc {
         font-size: 1rem;
     }
-    .card-baka {
+    .card-kersik {
         padding: 20px;
     }
 }
