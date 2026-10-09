@@ -251,5 +251,15 @@ class SeedBobuCommand extends Command
 
         $this->callSilent('cache:clear');
         $this->callSilent('view:clear');
+
+        try {
+            $this->call('opensid:activate-theme', ['slug' => 'bobu-gov']);
+        } catch (\Throwable $e) {
+            // Fallback aktivasi tema manual jika command belum termuat
+            if (Schema::hasTable('theme')) {
+                DB::table('theme')->update(['status' => 0]);
+                DB::table('theme')->where('slug', 'like', '%bobu%')->orWhere('path', 'like', '%bobu%')->update(['status' => 1]);
+            }
+        }
     }
 }
