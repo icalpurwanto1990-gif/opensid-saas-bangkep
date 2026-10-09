@@ -40,8 +40,9 @@ jobs:
             echo "🐳 [3/4] Menjalankan update kontainer Docker Staging..."
             docker compose -f docker-compose.staging.yml up -d --build
             
-            echo "📦 [4/4] Menjalankan migrasi database dan pembersihan cache..."
+            echo "📦 [4/4] Menjalankan migrasi database, aktivasi tema, dan pembersihan cache..."
             docker exec -t opensid_staging_app php artisan migrate --force || true
+            docker exec -t opensid_staging_app php artisan opensid:activate-theme bobu-gov || true
             docker exec -t opensid_staging_app php artisan optimize:clear || true
             
             echo "🎉 Auto-deployment ke VPS 148.230.102.95:8090 Berhasil!"
