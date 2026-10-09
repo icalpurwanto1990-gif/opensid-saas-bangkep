@@ -1,48 +1,49 @@
 /* ==========================================================================
-   TEMA RESMI DESA BOBU — DESIGN SYSTEM DESA KERSIK
-   Inspired by Website Resmi Desa Kersik (kersik.desa.id)
-   Energetic, Playful, Bold Typography (Outfit), White Canvas (#ffffff),
-   Kersik Green Accent (#87de57), Confident Hierarchy
+   TEMA RESMI DESA BOBU — MASTER PROMPT INTEGRATION
+   Platform: OpenSID SaaS Desa Bobu, Kec. Tinangkung Selatan, Kab. Banggai Kepulauan
+   Typography: Plus Jakarta Sans (Headings Weight: 800 ExtraBold)
+   Color Palette: Clean Warm Canvas (#fdfdfa), Dark Text (#2d3748), Portal Blue (#0d6efd), Gov Green (#10b981)
+   Shapes: Rounded Cards (20px), Capsule/Pill Buttons (rounded-full), Tinted Shadows
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
     /* 1. Color Palette Tokens */
-    --kersik-primary:    #87de57;  /* Brand color, CTA background */
-    --kersik-secondary:  #6bd731;  /* Hover state, complementary accent */
-    --kersik-accent-soft:#a2e67e;  /* Soft badge/icon background */
-    --kersik-accent-deep:#029019;  /* Accessible green text on white */
-    
-    --kersik-bg:         #ffffff;  /* Primary canvas */
-    --kersik-surface:    #f6f6f6;  /* Alternating block */
-    --kersik-dark:       #1d1d1d;  /* Dark sections & text emphasis */
-    --kersik-text:       #000000;  /* Main text */
-    --kersik-muted:      #666666;  /* Secondary / muted text */
-    --kersik-border:     #e5e7eb;  /* Card & divider borders */
-    --kersik-danger:     #d60505;
+    --bobu-canvas:        #fdfdfa;  /* Clean warm canvas background */
+    --bobu-surface:       #ffffff;  /* White component surface */
+    --bobu-surface-soft:  #f8fafc;  /* Subtle section background */
+    --bobu-primary:       #0d6efd;  /* Portal Desa Blue */
+    --bobu-primary-hover: #0b5ed7;  /* Primary hover state */
+    --bobu-primary-soft:  #eff6ff;  /* Soft primary tint */
+    --bobu-accent-green:  #10b981;  /* Government Emerald Green */
+    --bobu-green-soft:    #ecfdf5;  /* Soft green background */
+    --bobu-dark:          #1a202c;  /* Dark charcoal for footer & header accents */
+    --bobu-text:          #2d3748;  /* Primary text color */
+    --bobu-text-muted:    #718096;  /* Secondary / muted text */
+    --bobu-border:        #edf2f7;  /* Smooth border */
+    --bobu-border-dark:   #2d3748;
 
-    /* 2. Typography Tokens (100% Outfit) */
-    --font-kersik: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* 2. Typography */
+    --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-    /* 3. Radius Scale (8px - 26px) */
-    --radius-subtle: 4px;
-    --radius-btn:    8px;
-    --radius-pill:   26px;
-    --radius-card:   16px;
-    --radius-lg:     26px;
+    /* 3. Radius Scale (20px Card Standard) */
+    --radius-pill: 9999px;
+    --radius-card: 20px;
+    --radius-sm:   10px;
 
-    /* 4. Depth & Elevation */
-    --shadow-low: rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 10px 15px -5px;
-    --shadow-md:  rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px;
-    --shadow-card: rgba(0, 0, 0, 0.05) 0px 1px 3px 0px, rgba(0, 0, 0, 0.05) 0px 36px 28px -7px, rgba(0, 0, 0, 0.04) 0px 17px 17px -7px;
+    /* 4. Tinted Shadow Scale */
+    --shadow-soft:  0 4px 15px -2px rgba(13, 110, 253, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+    --shadow-card:  0 10px 25px -5px rgba(13, 110, 253, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 20px 35px -8px rgba(13, 110, 253, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.05);
 }
 
 /* Base Canvas & Global Typography */
 body {
-    font-family: var(--font-kersik);
-    background-color: var(--kersik-bg);
-    color: var(--kersik-text);
+    font-family: var(--font-body);
+    background-color: var(--bobu-canvas);
+    color: var(--bobu-text);
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -50,434 +51,393 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-kersik);
-    color: var(--kersik-text);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--font-heading);
+    color: var(--bobu-dark);
+    font-weight: 800;
+    letter-spacing: -0.025em;
     line-height: 1.25;
 }
 
-h1 { font-size: 2.75rem; font-weight: 700; }
-h2 { font-size: 2.25rem; font-weight: 700; }
-h3 { font-size: 1.6rem; font-weight: 700; }
-h4 { font-size: 1.25rem; font-weight: 700; }
+h1 { font-size: 2.75rem; font-weight: 800; }
+h2 { font-size: 2.15rem; font-weight: 800; }
+h3 { font-size: 1.5rem; font-weight: 800; }
+h4 { font-size: 1.2rem; font-weight: 800; }
 
 a {
-    color: var(--kersik-accent-deep);
+    color: var(--bobu-primary);
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 a:hover {
-    color: var(--kersik-secondary);
+    color: var(--bobu-primary-hover);
 }
 
 /* ==========================================================================
-   BUTTONS (Desa Kersik Standard)
+   HEADER & TOPBAR STYLES
    ========================================================================== */
-.btn-kersik-primary {
-    background: var(--kersik-primary);
-    color: #000000 !important;
-    border-radius: var(--radius-pill);
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(135, 222, 87, 0.35);
-    transition: all 0.25s ease;
-}
-
-.btn-kersik-primary:hover {
-    background: var(--kersik-secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(107, 215, 49, 0.45);
-}
-
-.btn-kersik-outline {
-    background: transparent;
-    color: #000000 !important;
-    border: 2px solid var(--kersik-primary);
-    border-radius: var(--radius-pill);
-    padding: 10px 26px;
-    font-size: 1rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.btn-kersik-outline:hover {
-    background: var(--kersik-primary);
-    color: #000000 !important;
-    transform: translateY(-2px);
-}
-
-.btn-kersik-dark {
-    background: var(--kersik-dark);
-    color: #ffffff !important;
-    border-radius: var(--radius-pill);
-    padding: 12px 28px;
-    font-size: 1rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.btn-kersik-dark:hover {
-    background: #000000;
-    transform: translateY(-2px);
-}
-
-/* ==========================================================================
-   CARDS (Desa Kersik Standard: 16px Radius, Mantine Multi-Shadow)
-   ========================================================================== */
-.card-kersik {
-    background: var(--kersik-bg);
-    border-radius: var(--radius-card);
-    padding: 32px;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--kersik-border);
-    transition: all 0.3s ease;
-}
-
-.card-kersik:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
-}
-
-/* ==========================================================================
-   HEADER & TOPBAR (Fresh & Crisp Kersik Style)
-   ========================================================================== */
-.kersik-topbar {
-    background: var(--kersik-surface);
-    border-bottom: 1px solid var(--kersik-border);
+.bobu-topbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--bobu-border);
     padding: 8px 0;
-    font-size: 0.825rem;
-    color: var(--kersik-muted);
+    font-size: 0.75rem;
+    color: var(--bobu-text-muted);
 }
 
-.kersik-badge-lime {
-    background: var(--kersik-primary);
-    color: #000000;
-    border-radius: var(--radius-pill);
-    padding: 3px 12px;
+.bobu-brand-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--bobu-border);
+    padding: 16px 0;
+}
+
+.bobu-brand-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.bobu-brand-subtitle {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 600;
+    color: var(--bobu-text-muted);
+}
+
+/* Running Ticker / Marquee */
+.bobu-ticker-bar {
+    background-color: #f8fafc;
+    border-bottom: 1px solid var(--bobu-border);
+    padding: 8px 0;
+}
+
+.bobu-ticker-tag {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-}
-
-.kersik-brand-header {
-    background: #ffffff;
-    border-bottom: 1px solid var(--kersik-border);
-    padding: 18px 0;
-}
-
-.kersik-brand-title {
-    font-size: 1.85rem;
+    background-color: var(--bobu-primary);
+    color: #ffffff;
     font-weight: 800;
-    color: var(--kersik-text);
-    margin: 0;
-    line-height: 1.15;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    margin-right: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
 }
 
-.kersik-brand-subtitle {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--kersik-accent-deep);
-}
-
-/* Navbar */
-.kersik-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid var(--kersik-border);
+/* Navigation Bar */
+.bobu-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--bobu-border);
     position: sticky;
     top: 0;
-    z-index: 50;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    z-index: 40;
+    box-shadow: var(--shadow-soft);
 }
 
-.kersik-nav-link {
-    color: var(--kersik-text);
+.bobu-nav-item {
+    font-size: 0.875rem;
     font-weight: 700;
-    font-size: 0.95rem;
-    padding: 14px 18px;
-    border-radius: var(--radius-pill);
+    color: var(--bobu-text);
+    padding: 14px 16px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
 }
 
-.kersik-nav-link:hover {
-    background: var(--kersik-surface);
-    color: var(--kersik-accent-deep);
-}
-
-.kersik-nav-link.active {
-    background: var(--kersik-primary);
-    color: #000000;
-}
-
-/* Ticker Marquee */
-.kersik-ticker-bar {
-    background: #ffffff;
-    border-bottom: 1px solid var(--kersik-border);
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-}
-
-.kersik-ticker-tag {
-    background: var(--kersik-dark);
-    color: var(--kersik-primary);
-    border-radius: var(--radius-btn);
-    padding: 3px 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    white-space: nowrap;
-    margin-right: 14px;
+.bobu-nav-item:hover,
+.bobu-nav-item.active {
+    color: var(--bobu-primary);
+    border-bottom-color: var(--bobu-primary);
 }
 
 /* ==========================================================================
-   HERO SECTION (Desa Kersik Pattern: "JELAJAHI Desa Bobu")
+   BUTTONS (CAPSULE / PILL STANDARD)
    ========================================================================== */
-.kersik-hero-section {
-    background: #ffffff;
-    padding: 64px 0 56px;
-    position: relative;
-    border-bottom: 1px solid var(--kersik-border);
-}
-
-.kersik-hero-lead-tag {
+.btn-bobu-primary {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: #f0fdf4;
-    border: 1px solid var(--kersik-accent-soft);
-    color: var(--kersik-accent-deep);
-    border-radius: var(--radius-pill);
-    padding: 6px 18px;
-    font-size: 0.85rem;
+    gap: 8px;
+    background-color: var(--bobu-primary);
+    color: #ffffff !important;
     font-weight: 700;
-    margin-bottom: 20px;
+    font-size: 0.8125rem;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+    transition: all 0.25s ease;
+    cursor: pointer;
 }
 
-.kersik-hero-title {
-    font-size: 3.25rem;
-    font-weight: 800;
-    color: #000000;
-    line-height: 1.15;
-    margin-bottom: 18px;
+.btn-bobu-primary:hover {
+    background-color: var(--bobu-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(13, 110, 253, 0.35);
 }
 
-.kersik-hero-title span {
-    color: #000000;
-    position: relative;
-    display: inline-block;
+.btn-bobu-green {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bobu-accent-green);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transition: all 0.25s ease;
+    cursor: pointer;
 }
 
-.kersik-hero-title span::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    width: 100%;
-    height: 12px;
-    background: var(--kersik-primary);
-    z-index: -1;
-    border-radius: 4px;
-    opacity: 0.85;
+.btn-bobu-green:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
 }
 
-.kersik-hero-desc {
-    font-size: 1.15rem;
-    color: var(--kersik-muted);
-    line-height: 1.7;
-    max-width: 640px;
-    margin-bottom: 32px;
+.btn-bobu-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    color: var(--bobu-text) !important;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--bobu-border);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.btn-bobu-outline:hover {
+    border-color: var(--bobu-primary);
+    color: var(--bobu-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
 }
 
 /* ==========================================================================
-   STATISTIK (Card Kersik)
+   CARDS (20PX ROUNDED STANDARD)
    ========================================================================== */
-.kersik-stat-card {
-    background: #ffffff;
+.card-bobu {
+    background-color: var(--bobu-surface);
+    border: 1px solid var(--bobu-border);
     border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
     padding: 24px;
-    border: 1px solid var(--kersik-border);
-    box-shadow: var(--shadow-low);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-bobu:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(13, 110, 253, 0.2);
+}
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.bobu-hero-section {
+    background-color: var(--bobu-canvas);
+    padding: 48px 0 32px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.bobu-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bobu-primary-soft);
+    color: var(--bobu-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(13, 110, 253, 0.15);
+}
+
+.bobu-hero-title {
+    font-size: 2.85rem;
+    font-weight: 800;
+    color: #1a202c;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.bobu-hero-title span {
+    color: var(--bobu-primary);
+}
+
+.bobu-hero-desc {
+    font-size: 1.05rem;
+    color: var(--bobu-text-muted);
+    line-height: 1.7;
+    max-width: 600px;
+}
+
+/* ==========================================================================
+   STATISTIK UTAMA (DASHBOARD WIDGETS - 8 WIDGET GRID)
+   ========================================================================== */
+.bobu-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .bobu-stat-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.bobu-stat-card {
+    background-color: #ffffff;
+    border: 1px solid var(--bobu-border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    box-shadow: var(--shadow-soft);
     display: flex;
     align-items: center;
     gap: 16px;
     transition: all 0.25s ease;
 }
 
-.kersik-stat-card:hover {
+.bobu-stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--kersik-primary);
+    box-shadow: var(--shadow-card);
+    border-color: rgba(13, 110, 253, 0.25);
 }
 
-.kersik-stat-icon {
-    width: 54px;
-    height: 54px;
-    border-radius: var(--radius-card);
+.bobu-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
-    background: #f4fbf1;
-    color: var(--kersik-accent-deep);
 }
 
-.kersik-stat-number {
-    font-size: 1.85rem;
+.bobu-stat-number {
+    font-size: 1.5rem;
     font-weight: 800;
-    color: #000000;
+    color: #1a202c;
     line-height: 1.1;
+    font-family: var(--font-heading);
 }
 
-.kersik-stat-label {
-    font-size: 0.825rem;
+.bobu-stat-label {
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--kersik-muted);
+    color: var(--bobu-text-muted);
+    margin-top: 2px;
 }
 
 /* ==========================================================================
    LAYANAN WARGA CARDS
    ========================================================================== */
-.kersik-service-card {
-    background: #ffffff;
+.bobu-service-card {
+    background-color: #ffffff;
+    border: 1px solid var(--bobu-border);
     border-radius: var(--radius-card);
-    padding: 28px;
+    padding: 24px;
     box-shadow: var(--shadow-card);
-    border: 1px solid var(--kersik-border);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.25s ease;
-    height: 100%;
+    transition: all 0.3s ease;
 }
 
-.kersik-service-card:hover {
-    border-color: var(--kersik-primary);
+.bobu-service-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(13, 110, 253, 0.3);
 }
 
-.kersik-service-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    display: inline-flex;
+.bobu-service-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background-color: var(--bobu-primary-soft);
+    color: var(--bobu-primary);
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    background: #f0fdf4;
-    color: var(--kersik-accent-deep);
-    margin-bottom: 18px;
+    font-size: 1.25rem;
+    margin-bottom: 16px;
 }
 
-.kersik-service-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #000000;
+.bobu-service-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1a202c;
     margin-bottom: 8px;
 }
 
-.kersik-service-desc {
-    font-size: 0.875rem;
-    color: var(--kersik-muted);
+.bobu-service-desc {
+    font-size: 0.8125rem;
+    color: var(--bobu-text-muted);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 /* ==========================================================================
-   BERITA & ARTIKEL
+   FOOTER (KOMPREHENSIF 4 KOLOM)
    ========================================================================== */
-.kersik-news-card {
-    background: #ffffff;
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--kersik-border);
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.bobu-footer {
+    background-color: #1a202c;
+    color: #cbd5e1;
+    padding-top: 64px;
+    padding-bottom: 32px;
+    margin-top: auto;
+    border-top: 4px solid var(--bobu-primary);
 }
 
-.kersik-news-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--kersik-primary);
+.bobu-footer h4 {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
 }
 
-.kersik-news-badge {
-    background: var(--kersik-primary);
-    color: #000000;
+.bobu-footer h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 32px;
+    height: 3px;
+    background-color: var(--bobu-primary);
     border-radius: var(--radius-pill);
-    padding: 3px 12px;
-    font-size: 0.725rem;
-    font-weight: 700;
 }
 
-/* ==========================================================================
-   FOOTER (Desa Kersik: Dark Accent #1d1d1d)
-   ========================================================================== */
-.kersik-footer {
-    background: var(--kersik-dark);
+.bobu-footer a {
+    color: #94a3b8;
+    transition: color 0.2s ease;
+}
+
+.bobu-footer a:hover {
     color: #ffffff;
-    padding-top: 56px;
-    margin-top: 64px;
-    border-top: 4px solid var(--kersik-primary);
 }
 
-.kersik-footer h4 {
-    color: #ffffff;
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.kersik-footer a {
-    color: #a3a3a3;
-}
-
-.kersik-footer a:hover {
-    color: var(--kersik-primary);
-}
-
-.kersik-footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 24px 0;
+.bobu-footer-bottom {
+    border-top: 1px solid #2d3748;
+    padding-top: 24px;
     margin-top: 48px;
-    font-size: 0.825rem;
-    color: #737373;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .kersik-hero-title {
-        font-size: 2.25rem;
-    }
-    .kersik-hero-desc {
-        font-size: 1rem;
-    }
-    .card-kersik {
-        padding: 20px;
-    }
+    font-size: 0.75rem;
+    color: #94a3b8;
 }

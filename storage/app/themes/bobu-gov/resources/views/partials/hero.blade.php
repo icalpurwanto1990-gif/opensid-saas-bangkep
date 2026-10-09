@@ -6,73 +6,74 @@
     $telepon = $desa['telepon'] ?? '';
 @endphp
 
-<section class="kersik-hero-section">
+<section class="bobu-hero-section">
     <div class="container mx-auto px-4 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <!-- Left: Hero Headline (Desa Kersik Standard Pattern) -->
+            <!-- Left: Hero Headline (Plus Jakarta Sans 800) -->
             <div class="lg:col-span-7 space-y-5">
-                <div class="kersik-hero-lead-tag">
-                    <i class="fas fa-compass text-[#029019]"></i>
-                    <span>PORTAL EKSPLORASI DIGITAL</span>
+                <div class="bobu-hero-badge">
+                    <i class="fas fa-landmark text-[#0d6efd]"></i>
+                    <span>PORTAL RESMI PEMERINTAH DESA</span>
                 </div>
 
-                <h1 class="kersik-hero-title">
-                    JELAJAHI <span>Desa {{ ucwords($namaDesa) }}</span>
+                <h1 class="bobu-hero-title">
+                    Portal Resmi <span>Desa {{ ucwords($namaDesa) }}</span>
                 </h1>
 
-                <p class="kersik-hero-desc">
-                    Melalui website ini Anda dapat menjelajahi segala hal yang terkait dengan Desa {{ ucwords($namaDesa) }}: aspek pemerintahan, penduduk, demografi, potensi desa, dan berita terkini di Kecamatan {{ ucwords($namaKec) }}, Kabupaten {{ ucwords($namaKab) }}.
+                <p class="bobu-hero-desc">
+                    Mewujudkan ekosistem desa digital yang transparan, inovatif, dan berdaya saing di wilayah Kecamatan {{ ucwords($namaKec) }}, Kabupaten {{ ucwords($namaKab) }}. Akses langsung permohonan surat kependudukan, transparansi anggaran, warta pembangunan, dan pengaduan warga.
                 </p>
 
+                <!-- Action Buttons (Capsule/Pill Style) -->
                 <div class="flex flex-wrap items-center gap-3 pt-2">
-                    <a href="{{ site_url('layanan-mandiri') }}" class="btn-kersik-primary">
+                    <a href="{{ site_url('layanan-mandiri') }}" class="btn-bobu-primary">
                         <i class="fas fa-id-card"></i>
-                        <span>Layanan Mandiri Warga</span>
+                        <span>Layanan Surat Mandiri</span>
                     </a>
-                    <a href="{{ site_url('artikel/kategori/profil-desa') }}" class="btn-kersik-outline">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Profil Desa</span>
-                    </a>
-                    <a href="{{ site_url('pengaduan') }}" class="btn-kersik-dark">
+                    <a href="{{ site_url('pengaduan') }}" class="btn-bobu-green">
                         <i class="fas fa-comment-dots"></i>
-                        <span>Kirim Aspirasi</span>
+                        <span>Pengaduan Warga</span>
+                    </a>
+                    <a href="{{ site_url('artikel/kategori/profil-desa') }}" class="btn-bobu-outline">
+                        <i class="fas fa-compass"></i>
+                        <span>Jelajahi Potensi Desa</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Right: Hero Visual Card (Desa Kersik 16px Card) -->
+            <!-- Right: Hero Visual Card (Rounded 20px) -->
             <div class="lg:col-span-5">
-                <div class="card-kersik bg-white">
-                    <div class="relative rounded-[12px] overflow-hidden mb-5 bg-[#f6f6f6] border border-slate-200 aspect-[16/10] flex items-center justify-center">
+                <div class="card-bobu bg-white">
+                    <div class="relative rounded-[16px] overflow-hidden mb-5 bg-[#f8fafc] border border-slate-100 aspect-[16/10] flex items-center justify-center shadow-inner">
                         @if (!empty($latar_website) && is_file(FCPATH . $latar_website))
                             <img src="{{ base_url($latar_website) }}" alt="Desa {{ $namaDesa }}" class="w-full h-full object-cover">
                         @else
                             <div class="text-center p-6 space-y-2">
-                                <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo" class="w-20 h-20 mx-auto object-contain">
-                                <div class="font-bold text-lg text-black">Desa {{ ucwords($namaDesa) }}</div>
-                                <div class="text-xs text-slate-500">Kec. {{ ucwords($namaKec) }}</div>
+                                <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo {{ $namaDesa }}" class="w-20 h-20 mx-auto object-contain drop-shadow">
+                                <div class="font-extrabold text-lg text-[#1a202c]">Pemerintah Desa {{ ucwords($namaDesa) }}</div>
+                                <div class="text-xs text-slate-500 font-medium">Kec. {{ ucwords($namaKec) }}, Kab. {{ ucwords($namaKab) }}</div>
                             </div>
                         @endif
                     </div>
 
                     @if (!empty($namaKades))
                         <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
-                            <div class="w-10 h-10 rounded-full bg-[#f0fdf4] text-[#029019] flex items-center justify-center text-lg font-bold">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 text-[#0d6efd] flex items-center justify-center text-base font-bold shadow-sm">
                                 <i class="fas fa-user-tie"></i>
                             </div>
                             <div>
-                                <div class="text-[10px] font-bold uppercase text-slate-500">Kepala Desa {{ ucwords($namaDesa) }}</div>
-                                <div class="text-sm font-extrabold text-black">{{ $namaKades }}</div>
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Kepala Desa {{ ucwords($namaDesa) }}</div>
+                                <div class="text-sm font-extrabold text-[#1a202c]">{{ $namaKades }}</div>
                             </div>
                         </div>
                     @endif
 
                     @if (!empty($telepon))
                         <div class="pt-3 flex items-center justify-between text-xs">
-                            <span class="text-slate-600 font-medium">
-                                <i class="fab fa-whatsapp text-[#029019] mr-1"></i> Kontak Kantor Desa:
+                            <span class="text-slate-600 font-medium flex items-center gap-1.5">
+                                <i class="fab fa-whatsapp text-[#10b981] text-sm"></i> Layanan WhatsApp Kantor:
                             </span>
-                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $telepon) }}" target="_blank" rel="noopener" class="font-bold text-black hover:text-[#029019] underline">
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $telepon) }}" target="_blank" rel="noopener" class="font-bold text-[#0d6efd] hover:underline">
                                 {{ $telepon }}
                             </a>
                         </div>

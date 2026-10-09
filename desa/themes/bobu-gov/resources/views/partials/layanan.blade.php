@@ -1,102 +1,102 @@
-<section class="py-16 bg-white border-b border-slate-100">
+<section class="py-12 bg-transparent">
     <div class="container mx-auto px-4 lg:px-8">
         <!-- Section Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
-                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-black bg-[#87de57] px-3.5 py-1.5 rounded-full mb-3">
-                    <i class="fas fa-hand-holding-heart"></i> Layanan Cepat
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0d6efd] bg-blue-50 px-3.5 py-1.5 rounded-full mb-2.5 border border-blue-100">
+                    <i class="fas fa-hand-holding-heart"></i> Administrasi & Pelayanan Warga
                 </div>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-black">Pusat Layanan Warga</h2>
-                <p class="text-xs md:text-sm text-slate-600 mt-1.5">Akses mandiri permohonan surat administrasi, bantuan sosial, dan aspirasi 24 jam sehari.</p>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-[#1a202c]">Pusat Layanan Terpadu Desa</h2>
+                <p class="text-xs md:text-sm text-slate-500 mt-1">Kemudahan akses mandiri permohonan surat, lapak UMKM, penyampaian aspirasi, dan informasi program desa.</p>
             </div>
-            <a href="{{ site_url('layanan-mandiri') }}" class="text-xs font-bold text-[#029019] hover:text-black flex items-center gap-1.5">
+            <a href="{{ site_url('layanan-mandiri') }}" class="text-xs font-bold text-[#0d6efd] hover:text-[#0b5ed7] flex items-center gap-1.5">
                 Semua Layanan Desa <i class="fas fa-arrow-right text-[10px]"></i>
             </a>
         </div>
 
-        <!-- 6 Quick Service Grid (Desa Kersik Cards) -->
+        <!-- 6 Interactive Service Cards (Rounded 20px, Pill Buttons) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 1. Permohonan Surat Online -->
-            <div class="kersik-service-card">
+            <!-- 1. Permohonan Surat Online (Layanan Mandiri) -->
+            <div class="bobu-service-card">
                 <div>
-                    <div class="kersik-service-icon">
+                    <div class="bobu-service-icon">
                         <i class="fas fa-file-signature"></i>
                     </div>
-                    <h3 class="kersik-service-title">Pengajuan Surat Online</h3>
-                    <p class="kersik-service-desc">Permohonan Surat Keterangan Usaha, Domisili, Pengantar SKCK, Kematian & Kelahiran tanpa perlu antre di kantor desa.</p>
+                    <h3 class="bobu-service-title">Layanan Surat Mandiri</h3>
+                    <p class="bobu-service-desc">Permohonan Surat Keterangan Usaha, Domisili, Pengantar SKCK, Kelahiran & Kematian secara online menggunakan PIN Warga.</p>
                 </div>
-                <a href="{{ site_url('layanan-mandiri') }}" class="btn-kersik-primary w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-pencil-alt text-xs"></i> Ajukan Surat Sekarang
+                <a href="{{ site_url('layanan-mandiri') }}" class="btn-bobu-primary w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-id-card text-xs"></i> Masuk Layanan Mandiri
                 </a>
             </div>
 
-            <!-- 2. Tracking Berkas Pengajuan -->
-            <div class="kersik-service-card">
+            <!-- 2. Pengaduan & Aspirasi Masyarakat -->
+            <div class="bobu-service-card">
                 <div>
-                    <div class="kersik-service-icon">
-                        <i class="fas fa-search-location"></i>
-                    </div>
-                    <h3 class="kersik-service-title">Cek Status Berkas</h3>
-                    <p class="kersik-service-desc">Pantau progres penandatanganan dan verifikasi surat oleh Kepala Desa secara transparan dan akuntabel.</p>
-                </div>
-                <a href="{{ site_url('layanan-mandiri') }}" class="btn-kersik-outline w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-check-circle text-xs"></i> Lacak Progres Berkas
-                </a>
-            </div>
-
-            <!-- 3. Pengaduan & Aspirasi Warga -->
-            <div class="kersik-service-card">
-                <div>
-                    <div class="kersik-service-icon">
+                    <div class="bobu-service-icon" style="background-color: #ecfdf5; color: #10b981;">
                         <i class="fas fa-bullhorn"></i>
                     </div>
-                    <h3 class="kersik-service-title">Kanal Pengaduan Warga</h3>
-                    <p class="kersik-service-desc">Sampaikan kritik, saran, permohonan informasi, dan laporan kerusakan fasilitas publik langsung ke aparat desa.</p>
+                    <h3 class="bobu-service-title">Pengaduan Masyarakat</h3>
+                    <p class="bobu-service-desc">Kanal resmi penyampaian aspirasi, kritik konstruktif, pengaduan pelayanan, dan laporan fasilitas publik langsung ke pamong desa.</p>
                 </div>
-                <a href="{{ site_url('pengaduan') }}" class="btn-kersik-dark w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-paper-plane text-xs"></i> Tulis Laporan Anda
+                <a href="{{ site_url('pengaduan') }}" class="btn-bobu-green w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-paper-plane text-xs"></i> Kirim Laporan Aspirasi
                 </a>
             </div>
 
-            <!-- 4. Transparansi Bantuan Sosial -->
-            <div class="kersik-service-card">
+            <!-- 3. Lapak Produk UMKM Warga -->
+            <div class="bobu-service-card">
                 <div>
-                    <div class="kersik-service-icon">
-                        <i class="fas fa-hand-holding-usd"></i>
-                    </div>
-                    <h3 class="kersik-service-title">Cek Bantuan Sosial</h3>
-                    <p class="kersik-service-desc">Keterbukaan data penerima manfaat BLT Dana Desa, PKH, BPNT, dan program bantuan sosial pemerintah lainnya.</p>
-                </div>
-                <a href="{{ site_url('bantuan') }}" class="btn-kersik-outline w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-users text-xs"></i> Lihat Data Bantuan
-                </a>
-            </div>
-
-            <!-- 5. Posyandu & Kesehatan Stunting -->
-            <div class="kersik-service-card">
-                <div>
-                    <div class="kersik-service-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3 class="kersik-service-title">Posyandu & Kesehatan</h3>
-                    <p class="kersik-service-desc">Informasi jadwal penimbangan balita di posyandu desa, layanan lansia, serta program pencegahan stunting.</p>
-                </div>
-                <a href="{{ site_url('kesehatan') }}" class="btn-kersik-outline w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-stethoscope text-xs"></i> Info Posyandu
-                </a>
-            </div>
-
-            <!-- 6. Lapak UMKM & Potensi Pesisir -->
-            <div class="kersik-service-card">
-                <div>
-                    <div class="kersik-service-icon">
+                    <div class="bobu-service-icon" style="background-color: #fffbeb; color: #f59e0b;">
                         <i class="fas fa-store"></i>
                     </div>
-                    <h3 class="kersik-service-title">Lapak UMKM Warga</h3>
-                    <p class="kersik-service-desc">Katalog promosi produk olahan hasil laut, perikanan, pertanian, dan kerajinan tangan khas warga Desa Bobu.</p>
+                    <h3 class="bobu-service-title">Lapak Produk UMKM</h3>
+                    <p class="bobu-service-desc">Etalase digital pemasaran produk lokal olahan hasil laut, perikanan, pertanian, dan kerajinan tangan khas warga Desa Bobu.</p>
                 </div>
-                <a href="{{ site_url('lapak') }}" class="btn-kersik-outline w-full justify-center !text-xs !py-2.5">
-                    <i class="fas fa-shopping-basket text-xs"></i> Belanja Produk Lokal
+                <a href="{{ site_url('lapak') }}" class="btn-bobu-outline w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-shopping-basket text-xs"></i> Jelajahi Produk Warga
+                </a>
+            </div>
+
+            <!-- 4. Lacak Progres Berkas Layanan -->
+            <div class="bobu-service-card">
+                <div>
+                    <div class="bobu-service-icon" style="background-color: #f5f3ff; color: #8b5cf6;">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <h3 class="bobu-service-title">Lacak Dokumen Surat</h3>
+                    <p class="bobu-service-desc">Pantau status verifikasi dan penandatanganan dokumen administrasi Anda secara real-time dan transparan.</p>
+                </div>
+                <a href="{{ site_url('layanan-mandiri') }}" class="btn-bobu-outline w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-check-circle text-xs"></i> Cek Status Berkas
+                </a>
+            </div>
+
+            <!-- 5. Transparansi Bantuan Sosial -->
+            <div class="bobu-service-card">
+                <div>
+                    <div class="bobu-service-icon" style="background-color: #fdf2f8; color: #ec4899;">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3 class="bobu-service-title">Cek Program Bantuan</h3>
+                    <p class="bobu-service-desc">Keterbukaan informasi penerima manfaat program bantuan sosial (BLT Dana Desa, PKH, BPNT) di Desa Bobu.</p>
+                </div>
+                <a href="{{ site_url('bantuan') }}" class="btn-bobu-outline w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-users text-xs"></i> Informasi Bantuan Sosial
+                </a>
+            </div>
+
+            <!-- 6. Peta Wilayah & Potensi Desa -->
+            <div class="bobu-service-card">
+                <div>
+                    <div class="bobu-service-icon" style="background-color: #ecfeff; color: #06b6d4;">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="bobu-service-title">Peta Wilayah & Geografis</h3>
+                    <p class="bobu-service-desc">Eksplorasi batas wilayah administratif dusun, sarana umum, fasilitas kesehatan, dan letak kantor desa secara interaktif.</p>
+                </div>
+                <a href="{{ site_url('peta') }}" class="btn-bobu-outline w-full justify-center !text-xs !py-2.5">
+                    <i class="fas fa-globe text-xs"></i> Buka Peta Interaktif
                 </a>
             </div>
         </div>

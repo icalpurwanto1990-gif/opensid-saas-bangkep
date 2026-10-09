@@ -1,5 +1,5 @@
 @php
-    $themeVersion = 'v1.2.0';
+    $themeVersion = 'v1.3.0';
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -14,7 +14,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-[#ffffff] text-[#000000] antialiased flex flex-col min-h-screen selection:bg-[#87de57] selection:text-black font-['Outfit']">
+<body class="bg-[#fdfdfa] text-[#2d3748] antialiased flex flex-col min-h-screen selection:bg-[#0d6efd] selection:text-white font-['Plus_Jakarta_Sans',sans-serif]">
     @include('theme::commons.loading_screen')
     @include('theme::commons.header')
 

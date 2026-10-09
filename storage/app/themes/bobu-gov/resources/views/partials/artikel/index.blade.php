@@ -19,12 +19,12 @@
 @section('content')
     <div class="mb-6 pb-3 border-b border-slate-200 flex items-center justify-between">
         <div>
-            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-1">
-                <i class="fas fa-newspaper"></i> Warta Berita
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0d6efd] bg-blue-50 px-2.5 py-0.5 rounded-full mb-1 border border-blue-100">
+                <i class="fas fa-newspaper"></i> Warta & Kabar Desa
             </div>
-            <h2 class="text-xl md:text-2xl font-black text-slate-900">{{ $title }}</h2>
+            <h2 class="text-xl md:text-2xl font-extrabold text-[#1a202c]">{{ $title }}</h2>
         </div>
-        <a href="{{ site_url('arsip') }}" class="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1">
+        <a href="{{ site_url('arsip') }}" class="text-xs font-bold text-[#0d6efd] hover:text-[#0b5ed7] flex items-center gap-1">
             Arsip Lengkap <i class="fas fa-chevron-right text-[10px]"></i>
         </a>
     </div>
